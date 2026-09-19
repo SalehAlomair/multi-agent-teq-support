@@ -2,8 +2,8 @@ import json
 import unittest
 from unittest.mock import patch
 
-from src.router_a import baseline_router, rule_first
-from src.router_b import (
+from src.routing.router_a import baseline_router, rule_first
+from src.routing.router_b import (
     build_router_prompt,
     hybrid_router,
     validate_router_response,
@@ -16,7 +16,7 @@ class RouterTests(unittest.TestCase):
         self.assertEqual(result["route"], "escalate")
         self.assertEqual(result["source"], "rule")
 
-    @patch("src.router_a.classifier_route")
+    @patch("src.routing.router_a.classifier_route")
     def test_classifier_mapping_and_confidence_policy(self, classifier_route):
         classifier_route.return_value = {
             "intent": "package",
@@ -43,7 +43,7 @@ class RouterTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_router_response(json.dumps({**valid, "unexpected": True}))
 
-    @patch("src.router_a.classifier_route")
+    @patch("src.routing.router_a.classifier_route")
     def test_hybrid_uses_llm_for_low_confidence(self, classifier_route):
         classifier_route.return_value = {
             "intent": "network",

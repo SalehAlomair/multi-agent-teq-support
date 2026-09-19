@@ -49,17 +49,22 @@ lora_config = LoraConfig(
 model_c = get_peft_model(base_c, lora_config)
 model_c.print_trainable_parameters()
 
-from model_c_eval import encode_conversation, completion_metrics, generate_answer
+from src.model_c.evaluation import (
+    adapter_diagnostics,
+    completion_metrics,
+    encode_conversation,
+    generate_answer,
+)
+from src.paths import DATA_ROOT, MODELS_ROOT, RESULTS_ROOT
 
 # Pre-tokenize and mask every prompt token; only assistant answers carry loss.
 def format_for_sft(example):
     return encode_conversation(tokenizer_c, example['messages'])
 
 import json
-from pathlib import Path
 from datasets import Dataset, DatasetDict
 
-DATA_DIR = Path(__file__).resolve().parent / 'data'
+DATA_DIR = DATA_ROOT / 'model_c'
 
 # Curated lab conversations: troubleshooting, uncertainty, tool-result synthesis,
 # and escalation. Splits are fixed and independent of Model B's QA dataset.
@@ -97,8 +102,8 @@ if any(torch.count_nonzero(p).item() for name, p in model_c.named_parameters() i
     raise RuntimeError('Reload Model C and create a fresh LoRA adapter before this run.')
 set_seed(42)
 run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
-run_dir = Path('models') / ('support_adapter_' + run_id)
-eval_dir = Path('results/model_c_evaluation') / run_id
+run_dir = MODELS_ROOT / 'model_c' / ('support_adapter_' + run_id)
+eval_dir = RESULTS_ROOT / 'model_c' / run_id
 eval_dir.mkdir(parents=True, exist_ok=False)
 system_message = sft_records[0]['messages'][0]
 manifest = {
@@ -109,16 +114,33 @@ manifest = {
     'golden_sha256': hashlib.sha256((DATA_DIR / 'golden_set.jsonl').read_bytes()).hexdigest(),
     'note': 'Golden Set is a known regression suite, not an unseen final benchmark.',
 }
-(eval_dir / 'manifest.json').write_text(json.dumps(manifest, indent=2))
+report_path = eval_dir / 'report.json'
+review_path = eval_dir / 'review.json'
 
 # Record a real baseline before any optimization. Keep incremental outputs.
 baseline_metrics = completion_metrics(model_c, tokenizer_c, sft_dataset['test'], baseline=True)
-(eval_dir / 'baseline_metrics.json').write_text(json.dumps(baseline_metrics, indent=2))
 baseline_answers = {}
+report = {
+    'manifest': manifest,
+    'evaluation': {
+        'baseline_method': 'Recorded before training with disabled adapter',
+        'split': 'test',
+        'loss_scope': 'assistant completion only, token-weighted',
+        'baseline': baseline_metrics,
+    },
+    'quality_gate': {
+        'loss_improved': False,
+        'golden_set': 'not generated',
+        'accepted': False,
+    },
+    'baseline_answers': baseline_answers,
+    'training_history': [],
+    'experiments': {},
+}
 for case in golden_set:
     baseline_answers[case['id']] = generate_answer(
         model_c, tokenizer_c, [system_message, {'role': 'user', 'content': case['prompt']}], baseline=True)
-    (eval_dir / 'baseline_answers.json').write_text(json.dumps(baseline_answers, indent=2))
+    report_path.write_text(json.dumps(report, indent=2))
     print(case['id'], 'baseline recorded')
 
 sft_args = SFTConfig(
@@ -142,7 +164,8 @@ assert trainer_c.train_dataset[0]['labels'] == sft_train[0]['labels']
 trainer_c.train()
 trainer_c.save_model(str(run_dir / 'final'))
 tokenizer_c.save_pretrained(str(run_dir / 'final'))
-(eval_dir / 'training_history.json').write_text(json.dumps(trainer_c.state.log_history, indent=2))
+report['training_history'] = trainer_c.state.log_history
+report_path.write_text(json.dumps(report, indent=2))
 print('Saved new run:', run_dir, eval_dir)
 
 # Phase B — Model C evaluation and quality gates
@@ -150,25 +173,26 @@ print('Saved new run:', run_dir, eval_dir)
 if 'trainer_c' not in globals() or trainer_c.state.global_step == 0:
     raise RuntimeError('Run the new baseline and training cell first.')
 eval_model_c = trainer_c.model
-model_report = {
-    'manifest': manifest,
-    'baseline_method': 'Recorded before training with disabled adapter',
-    'split': 'test', 'loss_scope': 'assistant completion only, token-weighted',
-    'baseline': baseline_metrics,
-    'fine_tuned': completion_metrics(eval_model_c, tokenizer_c, sft_dataset['test']),
-}
-model_report['quality_gate'] = {
-    'loss_improved': model_report['fine_tuned']['loss'] < model_report['baseline']['loss'],
+report['evaluation']['fine_tuned'] = completion_metrics(
+    eval_model_c,
+    tokenizer_c,
+    sft_dataset['test'],
+)
+report['quality_gate'] = {
+    'loss_improved': (
+        report['evaluation']['fine_tuned']['loss']
+        < report['evaluation']['baseline']['loss']
+    ),
     'golden_set': 'pending human review', 'accepted': False,
 }
-(eval_dir / 'metrics.json').write_text(json.dumps(model_report, indent=2, allow_nan=False))
-print(json.dumps(model_report, indent=2))
+report_path.write_text(json.dumps(report, indent=2, allow_nan=False))
+print(json.dumps(report, indent=2))
 
 # Golden Set: generate both versions, then review
 # These 10 cases are separate from the SFT data. Generation is deterministic. Judge each response against its rubric: keyword matches alone cannot establish groundedness or safe escalation. Review files retain both responses and start with null verdicts; no case passes automatically. Generation may take several minutes on CPU.
 
-review_path = eval_dir / ('golden_review_' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f') + '.json')
 reviews = []
+review_document = {'standard': reviews, 'concise': []}
 for case in golden_set:
     baseline = baseline_answers[case['id']]
     tuned = generate_answer(eval_model_c, tokenizer_c,
@@ -180,14 +204,15 @@ for case in golden_set:
         'baseline_pass': None, 'fine_tuned_pass': None,
         'error_category': '', 'review_notes': '',
     })
-    review_path.write_text(json.dumps(reviews, indent=2))
+    review_path.write_text(json.dumps(review_document, indent=2))
     print(case['id'], 'truncated:', baseline['truncated'], tuned['truncated'])
 print('Review file:', review_path)
 
 # Apply the gate after review
 # In the generated review JSON, set baseline_pass and fine_tuned_pass to true or false and explain the verdict in review_notes. For failures, record an error_category such as hallucination, missed escalation, missing clarification, or instruction following. Then run the cell below. Acceptance requires lower test loss, all required fine-tuned cases passing, and completed reviews. This is Model C's gate only, not a system deployment gate.
 
-reviews = json.loads(review_path.read_text())
+review_document = json.loads(review_path.read_text())
+reviews = review_document['standard']
 expected = {case['id'] for case in golden_set}
 if len(reviews) != len(expected) or {row['id'] for row in reviews} != expected:
     raise ValueError('Review must contain each Golden Set case exactly once.')
@@ -203,25 +228,19 @@ truncated_cases = [row['id'] for row in reviews if any(
     row[key]['truncated'] for key in ['baseline_generation', 'fine_tuned_generation'])]
 required_pass = complete and all(row['fine_tuned_pass'] is True
                                for row in reviews if row['id'] in required_ids)
-model_report['quality_gate'].update({
+report['quality_gate'].update({
     'golden_set': 'reviewed' if complete else 'pending human review',
     'required_cases_pass': required_pass,
     'regressions': regressions,
     'truncated_cases': truncated_cases,
     'review_file': str(review_path),
-    'accepted': bool(model_report['quality_gate']['loss_improved'] and required_pass and not regressions and not truncated_cases),
+    'accepted': bool(report['quality_gate']['loss_improved'] and required_pass and not regressions and not truncated_cases),
 })
-(eval_dir / 'metrics.json').write_text(json.dumps(model_report, indent=2, allow_nan=False))
-print(json.dumps(model_report['quality_gate'], indent=2))
+report_path.write_text(json.dumps(report, indent=2, allow_nan=False))
+print(json.dumps(report['quality_gate'], indent=2))
 
 # Diagnose the current adapter and compare concise responses
 # Run the next cell directly while the trained model remains in memory. It does not train or replace previous results. New training examples only take effect after rerunning data preparation and a fresh training run.
-
-# Run only this cell on the current trained model; no retraining required.
-import importlib
-import model_c_eval
-importlib.reload(model_c_eval)
-from model_c_eval import adapter_diagnostics, generate_answer
 
 if 'trainer_c' not in globals() or trainer_c.state.global_step == 0:
     raise RuntimeError('This cell needs the trained trainer_c from the current run.')
@@ -230,9 +249,6 @@ probe_messages = [sft_records[0]['messages'][0], {
     'role': 'user', 'content': 'A background task is delayed. What information should I collect first?'}]
 diagnostics = adapter_diagnostics(current_model, tokenizer_c, probe_messages)
 print(json.dumps(diagnostics, indent=2))
-comparison_dir = eval_dir / ('concise_' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f'))
-comparison_dir.mkdir(parents=True, exist_ok=False)
-(comparison_dir / 'adapter_diagnostics.json').write_text(json.dumps(diagnostics, indent=2))
 if not diagnostics['effect_detected']:
     raise RuntimeError('No adapter effect on this probe. Investigate before retraining or scoring.')
 
@@ -243,12 +259,18 @@ concise_system['content'] += (
     ' Answer directly in at most 100 words. Put the decision and essential next '
     'action first. Avoid preambles, repeated explanations, and speculative advice.'
 )
-(comparison_dir / 'generation_config.json').write_text(json.dumps({
+concise_config = {
     'system_message': concise_system, 'max_new_tokens': 384, 'do_sample': False,
     'model': MODEL_C, 'adapter_run': str(run_dir),
     'baseline_method': 'Current base with adapter disabled; prompting experiment after training',
-}, indent=2))
+}
+report['experiments']['concise'] = {
+    'generation_config': concise_config,
+    'adapter_diagnostics': diagnostics,
+}
+report_path.write_text(json.dumps(report, indent=2, allow_nan=False))
 concise_reviews = []
+review_document['concise'] = concise_reviews
 for case in golden_set:
     messages = [concise_system, {'role': 'user', 'content': case['prompt']}]
     base = generate_answer(current_model, tokenizer_c, messages, baseline=True)
@@ -259,6 +281,6 @@ for case in golden_set:
         'fine_tuned_generation': {k:v for k,v in tuned.items() if k != 'text'},
         'baseline_pass': None, 'fine_tuned_pass': None, 'error_category': '', 'review_notes': '',
     })
-    (comparison_dir / 'review.json').write_text(json.dumps(concise_reviews, indent=2))
+    review_path.write_text(json.dumps(review_document, indent=2))
     print(case['id'], base['finish_reason'], tuned['finish_reason'])
-print('Review the new experiment separately:', comparison_dir / 'review.json')
+print('Review both standard and concise experiments:', review_path)

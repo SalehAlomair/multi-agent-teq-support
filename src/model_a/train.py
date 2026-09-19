@@ -4,8 +4,6 @@ Converted from the MODEL A section of testing.ipynb.
 """
 
 import json
-from pathlib import Path
-from typing import Any, cast
 
 from datasets import Dataset
 import numpy as np
@@ -18,7 +16,10 @@ from transformers import (
     TrainingArguments,
 )
 
-DATA_PATH = Path(__file__).resolve().parent / "data" / "model_a_intents.jsonl"
+from src.paths import DATA_ROOT, MODELS_ROOT
+
+DATA_PATH = DATA_ROOT / "model_a" / "intents.jsonl"
+MODEL_DIR = MODELS_ROOT / "model_a" / "intent_classifier"
 
 MODEL_A = 'distilbert-base-uncased'
 LABELS = [
@@ -114,7 +115,7 @@ print(train_a)
 data_collator = DataCollatorWithPadding(tokenizer=tokenizer_a)
 
 args_a = TrainingArguments(
-    output_dir='models/intent_classifier',
+    output_dir=str(MODEL_DIR),
     learning_rate=2e-5,
     per_device_eval_batch_size=8,
     per_device_train_batch_size=8,
@@ -137,13 +138,7 @@ trainer_a = Trainer(
     data_collator=data_collator
 )
 
-checkpoints = list(Path(args_a.output_dir).glob("checkpoint-*"))
-last_checkpoint = max(
-    checkpoints,
-    key=lambda checkpoint: int(checkpoint.name.rsplit("-", 1)[-1]),
-    default=None,
-)
-trainer_a.train(resume_from_checkpoint=str(last_checkpoint) if last_checkpoint else None)
-trainer_a.evaluate(cast(Any, test_a))
-trainer_a.save_model("models/intent_classifier")
-tokenizer_a.save_pretrained("models/intent_classifier")
+trainer_a.train()
+trainer_a.evaluate(test_a)
+trainer_a.save_model(str(MODEL_DIR))
+tokenizer_a.save_pretrained(str(MODEL_DIR))

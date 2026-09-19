@@ -1,5 +1,5 @@
 import unittest
-from model_c_eval import encode_conversation
+from src.model_c.evaluation import encode_conversation
 
 class Tokenizer:
     def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=False):

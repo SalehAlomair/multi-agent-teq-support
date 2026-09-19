@@ -7,7 +7,6 @@ Converted from the MODEL B section of testing.ipynb.
 
 import json
 import re
-from pathlib import Path
 
 import torch
 from datasets import Dataset
@@ -20,7 +19,11 @@ from transformers import (
     TrainingArguments,
 )
 
-DATA_PATH = Path(__file__).resolve().parent / "data" / "model_b_qa.jsonl"
+from src.paths import DATA_ROOT, MODELS_ROOT
+
+DATA_PATH = DATA_ROOT / "model_b" / "qa.jsonl"
+MODEL_DIR = MODELS_ROOT / "model_b" / "qa_model"
+CHECKPOINT_DIR = MODELS_ROOT / "model_b" / "checkpoints"
 
 MODEL_B = "distilbert-base-uncased-distilled-squad"
 tokenizer_b = AutoTokenizer.from_pretrained(MODEL_B)
@@ -131,7 +134,7 @@ qa_val_features = val_b.map(prepare_qa_features, batched=True, remove_columns=va
 data_collator = DataCollatorWithPadding(tokenizer=tokenizer_b)
 
 args_b = TrainingArguments(
-    output_dir='models/qa_model_checkpoints',
+    output_dir=str(CHECKPOINT_DIR),
     learning_rate=2e-5,
     per_device_eval_batch_size=8,
     per_device_train_batch_size=8,
@@ -154,8 +157,8 @@ trainer_b = Trainer(
 )
 
 trainer_b.train()
-trainer_b.save_model('models/qa_model')
-tokenizer_b.save_pretrained('models/qa_model')
+trainer_b.save_model(str(MODEL_DIR))
+tokenizer_b.save_pretrained(str(MODEL_DIR))
 
 test_b_tokenized = tokenizer_b(
     [ex["question"].strip() for ex in test_b],

@@ -5,14 +5,21 @@ import os
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
-from src.router_a import baseline_router
+from dotenv import load_dotenv
 
+from src.paths import PROJECT_ROOT
+from src.routing.router_a import baseline_router
+
+
+load_dotenv(PROJECT_ROOT / ".env")
 
 LLAMA_SERVER_URL = os.getenv(
     "LLAMA_SERVER_URL",
     "http://127.0.0.1:8080/v1/chat/completions",
 )
 LLAMA_MODEL = os.getenv("LLAMA_MODEL", "local-qwen")
+MAX_TOKENS = int(os.getenv("ROUTER_MAX_TOKENS", "160"))
+THINKING_BUDGET_TOKENS = int(os.getenv("ROUTER_THINKING_BUDGET", "48"))
 
 
 ROUTER_SYSTEM = """
@@ -82,7 +89,9 @@ def generate_with_llama_server(messages):
             "model": LLAMA_MODEL,
             "messages": messages,
             "temperature": 0,
-            "max_tokens": 100,
+            "max_tokens": MAX_TOKENS,
+            "thinking_budget_tokens": THINKING_BUDGET_TOKENS,
+            "chat_template_kwargs": {"enable_thinking": True},
             "response_format": {"type": "json_object"},
         }
     ).encode("utf-8")

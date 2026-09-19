@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+*.pyc
+.env
+models
+data
+results
+notebooks
+requirements
+tests
+

@@ -1,0 +1,44 @@
+services:
+  support-agent:
+    build: .
+    env_file: .env
+    environment:
+      LLAMA_SERVER_URL: http://host.docker.internal:8080/v1/chat/completions
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      OPENAI_API_BASE_URL: http://support-agent:8000/v1
+      OPENAI_API_BASE_URLS: http://support-agent:8000/v1
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-local-demo-key}
+      OPENAI_API_KEYS: ${OPENAI_API_KEY:-local-demo-key}
+      ENABLE_OPENAI_API: "true"
+      ENABLE_OLLAMA_API: "false"
+      ENABLE_PERSISTENT_CONFIG: "false"
+      OFFLINE_MODE: "true"
+      HF_HUB_OFFLINE: "1"
+      RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
+    ports:
+      - "3000:8080"
+    volumes:
+      - openwebui:/app/backend/data
+    depends_on:
+      support-agent:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  openwebui:

@@ -1,14 +1,6 @@
 """Router A: rules and the fine-tuned intent classifier."""
 
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-
-router_tokenizer = AutoTokenizer.from_pretrained("models/intent_classifier")
-router_model = AutoModelForSequenceClassification.from_pretrained(
-    "models/intent_classifier"
-)
-router_model.eval()
+from src.model_a.inference import predict_intent
 
 RULES = {
     "escalate": ["data loss", "security breach", "production down", "corruption"],
@@ -37,22 +29,8 @@ def rule_first(text: str):
     return None
 
 
-@torch.no_grad()
 def classifier_route(text: str):
-    inputs = router_tokenizer(
-        text,
-        return_tensors="pt",
-        truncation=True,
-        max_length=128,
-    )
-    logits = router_model(**inputs).logits[0]
-    probabilities = torch.softmax(logits, dim=-1)
-    index = int(torch.argmax(probabilities))
-    return {
-        "intent": router_model.config.id2label[index],
-        "confidence": float(probabilities[index]),
-        "source": "classifier",
-    }
+    return predict_intent(text)
 
 
 def baseline_router(text: str):
