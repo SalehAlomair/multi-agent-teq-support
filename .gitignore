@@ -9,3 +9,7 @@ wheels/
 # Virtual environments
 .venv
 models/
+files/
+.vscode
+data
+results
