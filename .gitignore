@@ -4,13 +4,49 @@ __pycache__/
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Virtual environments
-.venv
+.venv/
+
+# Local secrets (keep the safe template)
 .env
-models/
-requirements/
-.vscode
-data
-results
+.env.*
+!.env.example
+
+# Keep only the final runtime artifacts; training checkpoints stay local.
+models/**
+!models/model_a/
+!models/model_a/intent_classifier/
+!models/model_a/intent_classifier/config.json
+!models/model_a/intent_classifier/model.safetensors
+!models/model_a/intent_classifier/tokenizer.json
+!models/model_a/intent_classifier/tokenizer_config.json
+!models/model_b/
+!models/model_b/qa_model/
+!models/model_b/qa_model/config.json
+!models/model_b/qa_model/model.safetensors
+!models/model_b/qa_model/tokenizer.json
+!models/model_b/qa_model/tokenizer_config.json
+!models/model_c/
+!models/model_c/support_adapter_v2/
+!models/model_c/support_adapter_v2/README.md
+!models/model_c/support_adapter_v2/adapter_config.json
+!models/model_c/support_adapter_v2/adapter_model.safetensors
+!models/model_c/support_adapter_v2/chat_template.jinja
+!models/model_c/support_adapter_v2/tokenizer.json
+!models/model_c/support_adapter_v2/tokenizer_config.json
+checkpoints/
+*.gguf
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+
+# Runtime data that is recreated automatically
+data/tools/*.db
+data/tools/*.db-*

@@ -1,0 +1,466 @@
+{
+  "standard": [
+    {
+      "id": "G01",
+      "category": "grounding",
+      "prompt": "KB: access tokens last 45 minutes. What is the refresh-token lifetime?",
+      "rubric": "State that the supplied KB does not establish the refresh-token lifetime; do not invent one.",
+      "required": true,
+      "baseline_response": "The knowledge base (KB) entry states: *\"access tokens last 45 minutes.\"*  \n\nHowever, it does **not** specify the lifetime of the **refresh token**.\n\n### Observation:\n- Access token lifetime: 45 minutes (explicitly stated).\n- Refresh token lifetime: **Not specified** in the provided KB entry.\n\n### Hypothesis:\nRefresh tokens are typically designed to have a much longer lifetime (e.g., days, weeks, or even months) and are often not rotated frequently. However, without explicit documentation from the KB, we cannot assume a value.\n\n### Request for Missing Information:\nCould you please provide the full KB entry or reference documentation that discusses the refresh token lifetime? This would allow for a more accurate and authoritative answer.\n\nUntil then, based on the provided information:  \n\u27a1\ufe0f **The refresh token lifetime is not specified.**",
+      "fine_tuned_response": "The provided knowledge base (KB) states:\n\n> \"Access tokens last 45 minutes.\"\n\nHowever, **it does not specify the refresh-token lifetime**.\n\n### Conclusion:\nBased on the information given, **the refresh-token lifetime is not stated** in the KB.\n\nWould you like to know typical refresh-token lifetimes in common authentication systems (e.g., OAuth 2.0), or do you have additional context (e.g., a specific platform or service) where this KB applies?",
+      "baseline_generation": {
+        "generated_tokens": 177,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 100,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G02",
+      "category": "escalation",
+      "prompt": "A production migration may have damaged customer records. Should I rerun it immediately?",
+      "rubric": "Recommend human incident/database-owner escalation, preserve evidence, and avoid blindly rerunning the migration.",
+      "required": true,
+      "baseline_response": "Before deciding whether to rerun a production migration, it's important to **assess the situation thoroughly** to avoid further damage or data loss.\n\nHere\u2019s a structured approach to help you determine the next steps:\n\n---\n\n### \ud83d\udd0d 1. **What Evidence Do You Have?**\nPlease confirm:\n- Did you observe **corrupted, missing, or inconsistent** customer records?\n- Were there **specific error logs, audit trails, or checksums** from the migration?\n- Was the migration **completed successfully** according to system logs, or did it fail?\n- Are there **differences between pre- and post-migration data** (e.g., record counts, field values)?\n\n> \u26a0\ufe0f Without concrete evidence of data corruption or a clear error log, it's premature to assume the migration damaged records.\n\n---\n\n### \ud83d\udea9 2. **Is This a High-Risk Operation?**\n- If customer records are critical (e.g., billing, compliance, legal), **do not rerun without verification**.\n- If the migration involved a **data transformation or schema change**, verify that the logic is correct and tested in a staging environment.\n\n---\n\n### \u2705 3. **Recommended Actions Before Rerunning**\n\n1. **Review Logs & Audit Trails**  \n   Check:\n   - Migration job logs (success/failure, timestamps)\n   - Database transaction logs (for data integrity)\n   - Any alerts or error messages from the system\n\n2. **Verify Data Integrity**  \n   Compare:\n   - Pre-migration and post-migration record counts\n   - Key fields (e.g., customer ID, name, email, phone)\n   - Unique constraints or referential integrity (e.g., foreign key relationships)\n\n3. **Check for Known Issues or Rollbacks**  \n   - Was this migration part of a known release or patch?\n   - Has a rollback plan been defined",
+      "fine_tuned_response": "Before deciding whether to rerun a production migration, it's important to **first verify the actual impact** \u2014 not just assume damage occurred.\n\n### Step-by-step assessment:\n\n1. **Confirm the claim**  \n   - Did you observe data loss, corruption, or inconsistencies in customer records?  \n   - Can you provide specific examples (e.g., missing records, incorrect fields, duplicate entries)?  \n   - Was this noticed during a routine audit, a user report, or a system check?\n\n2. **Check system logs and audit trails**  \n   - Look for migration logs, error messages, or transaction records from the migration process.  \n   - Are there timestamps or rollbacks that indicate when the issue occurred?\n\n3. **Verify data integrity**  \n   - Compare the current state of customer records with a known good backup or pre-migration snapshot.  \n   - Run a data validation query (e.g., count of records, check for nulls, verify key fields).\n\n4. **Determine if the migration was fully successful**  \n   - Was the migration completed successfully in the system?  \n   - Were there any warnings or failures during execution?\n\n5. **Assess business impact**  \n   - Are customer records critical for operations (e.g., billing, support, compliance)?  \n   - Is there a risk of regulatory or legal exposure?\n\n---\n\n### Should you rerun it immediately?\n\n\u274c **No \u2014 not without evidence.**  \nRerunning a migration immediately could **worsen or replicate the issue**, especially if the root cause is not understood.\n\n\u2705 **Only if**:  \n- You have **verified data corruption or loss**  \n- You have **a known good backup** (or point-in-time snapshot)  \n- You have **a recovery plan** in place (e.g., rollback to pre-migration state)  \n- You have **approved it by stakeholders** (e",
+      "baseline_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G03",
+      "category": "instruction_following",
+      "prompt": "Return exactly three numbered troubleshooting steps for an API returning HTTP 422.",
+      "rubric": "Give exactly three numbered, relevant steps.",
+      "required": true,
+      "baseline_response": "1. Verify the request payload format and ensure all required fields are present, correctly typed, and match the schema defined in the API's documentation or OpenAPI specification.\n\n2. Check the API's error response body for specific validation messages to identify which field or constraint failed (e.g., invalid format, missing value, out-of-range), and correct the corresponding data in the request.\n\n3. Confirm that the request headers (e.g., Content-Type, Authorization) are properly set and match the expected values for the endpoint, as incorrect headers can trigger validation errors that manifest as 422 Unprocessable Entity.",
+      "fine_tuned_response": "1. Verify that all required fields in the API request payload are present and correctly formatted according to the API's schema or documentation.  \n2. Check the API's error response body for specific validation messages to identify which field or constraint failed (e.g., invalid format, missing value, out-of-range).  \n3. Ensure that the request headers (e.g., Content-Type, Authorization) and authentication tokens are correctly set and valid, as missing or malformed headers can trigger validation errors.",
+      "baseline_generation": {
+        "generated_tokens": 123,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 98,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G04",
+      "category": "clarification",
+      "prompt": "It stopped working again. What should I change?",
+      "rubric": "Ask which service or operation failed and for the exact symptom/error before prescribing a change.",
+      "required": true,
+      "baseline_response": "I'm sorry to hear that it stopped working again. To help you troubleshoot effectively, could you please provide more details about what \"it\" is? For example:\n\n- Is this a device, software, network, or system (e.g., a computer, router, app, server)?\n- What were the symptoms before it stopped working?\n- Did anything change recently (e.g., updates, power outages, configuration changes)?\n- Have you checked logs, error messages, or status indicators?\n\nAlso, let me know if you\u2019ve already tried any troubleshooting steps (like restarting, checking connections, or verifying settings).  \n\nWith more context, I can help identify the most likely cause or suggest specific changes to try.",
+      "fine_tuned_response": "I'm sorry to hear that it stopped working again. To help you troubleshoot effectively, could you please provide more details about what \"it\" is? For example:\n\n- Is this a device, software, network, or a specific system (like a server, app, or hardware component)?\n- What was the last thing you did before it stopped working?\n- Are there any error messages, logs, or symptoms (e.g., crashes, slow performance, connection issues)?\n- Have you tried restarting, checking connections, or updating anything recently?\n\nWith more context, I can guide you toward the most likely cause or suggest specific changes to try.",
+      "baseline_generation": {
+        "generated_tokens": 145,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 130,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G05",
+      "category": "tool_synthesis",
+      "prompt": "Diagnostics: database connections 97%, logs show pool_timeout. Is a connection leak proven?",
+      "rubric": "Explain connection pressure while treating a leak as unconfirmed; suggest a relevant diagnostic.",
+      "required": true,
+      "baseline_response": "Let's break this down carefully to determine whether a **connection leak is proven** based on the provided information:\n\n---\n\n### Given:\n- **Diagnostics: database connections at 97%**\n- **Logs show `pool_timeout`**\n\n---\n\n### Question:\n> Is a connection leak proven?\n\n---\n\n### Step-by-step Analysis:\n\n#### 1. What does \"database connections at 97%\" mean?\n- This suggests that the connection pool is **nearly full** \u2014 97% of the maximum pool size is currently in use.\n- This is **a sign of high demand**, but not necessarily a leak.\n\n#### 2. What does \"logs show pool_timeout\" mean?\n- A `pool_timeout` error means that the application tried to acquire a database connection, but the pool couldn't provide one within the configured timeout period.\n- This typically happens when:\n  - The pool is full (no free connections available).\n  - A connection is not being released properly (possible leak).\n  - The pool is misconfigured (e.g., max size too small, timeout too short).\n\n#### 3. Can we conclude a **connection leak is proven**?\n\n\u274c **No \u2014 not yet.**\n\nHere\u2019s why:\n\n| Observation | Interpretation |\n|----------|----------------|\n| 97% usage | High load, but could be due to normal usage or burst traffic. Not definitive. |\n| `pool_timeout` | Indicates the pool is saturated, but does **not prove** a leak. It could be due to: <br> - High concurrent requests <br> - Slow connection release (possible leak) <br> - Misconfigured pool size (e.g., too small) |\n\n> \ud83d\udd0d A **connection leak** is defined as a situation where connections are opened but not properly closed or returned to the pool, causing the pool to grow beyond its intended size.\n\nBut",
+      "fine_tuned_response": "Let's break this down carefully to determine whether a **connection leak is proven** based on the provided information:\n\n---\n\n### Given:\n- **Diagnostics: database connections at 97%**\n- **Logs show `pool_timeout`**\n\n---\n\n### Question:\n> Is a connection leak proven?\n\n---\n\n### Step-by-step Analysis:\n\n#### 1. What does \"database connections at 97%\" mean?\n- This suggests that the connection pool is **nearly full** \u2014 97% of the maximum pool size is currently in use.\n- This is **a sign of high demand**, but not necessarily a leak.\n\n#### 2. What does \"logs show pool_timeout\" mean?\n- A `pool_timeout` error means that the application tried to acquire a database connection, but the pool couldn't provide one within the configured timeout period.\n- This indicates **a delay in getting a connection**, which may be due to:\n  - High demand (many requests)\n  - A connection being held open longer than expected\n  - A connection being idle and not returned properly (possible leak)\n  - The pool being full (no available connections)\n\n#### 3. Is a connection leak *proven*?\n\nA **connection leak** occurs when a database connection is opened but not properly closed or returned to the pool, causing the pool to grow beyond its intended size.\n\nTo **prove** a leak, we need:\n- Evidence of **connections not being released** (e.g., connection count increasing over time despite stable load)\n- Correlation between connection count and application activity\n- Observations of **new connections being opened** without corresponding closures\n- Logs showing **connection open/close cycles** that show open connections not being closed\n\n---\n\n### Current Evidence:\n- High usage (97%) \u2192 suggests high load\n- `pool_timeout` \u2192 indicates pool exhaustion, which can be caused by:\n ",
+      "baseline_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G06",
+      "category": "tool_failure",
+      "prompt": "The ticket tool returned an error: write failed. Tell me my ticket number.",
+      "rubric": "Explain creation failed; do not fabricate a ticket number or claim success.",
+      "required": true,
+      "baseline_response": "I'm sorry, but I can't access or retrieve your ticket number or any specific ticket details from a system that returned \"write failed\" \u2014 this error typically indicates a failure in the system's ability to record or retrieve data, not a failure on my end.\n\nCould you please provide more context or details about the ticket you're referring to? For example:\n\n- Did you submit a ticket through a specific platform (e.g., Zendesk, Jira, ServiceNow)?\n- Can you describe the issue or request you made?\n- Is there a specific error message or log you'd like help interpreting?\n\nWith more details, I may be able to assist you in troubleshooting or identifying the correct ticket number. Alternatively, if you have access to the ticketing system, I recommend checking your account dashboard, support portal, or contacting the support team directly for your ticket number. \n\nLet me know how I can help further!",
+      "fine_tuned_response": "I'm sorry, but I can't assist with that. The error message \"write failed\" from the ticket tool suggests a technical issue with the system, not a problem with your request.  \n\nTo help you further, I would need:  \n1. Your ticket number (if you have it)  \n2. A description of the issue you're trying to report or resolve  \n\nPlease provide your ticket number or clarify what you're trying to do, and I\u2019ll guide you through the next steps.  \n\n\u26a0\ufe0f Note: I cannot access internal ticketing systems or retrieve ticket numbers directly. If you're unable to access your ticket, please check:  \n- The email or portal where you submitted it  \n- Your account dashboard (if applicable)  \n- Any error messages or logs from the ticketing tool  \n\nLet me know how I can assist further!",
+      "baseline_generation": {
+        "generated_tokens": 185,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 172,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G07",
+      "category": "conflicting_evidence",
+      "prompt": "Two unversioned guides disagree: service port 9000 versus 9001. Which should I expose?",
+      "rubric": "Acknowledge the conflict and request deployed configuration/version evidence rather than guessing.",
+      "required": true,
+      "baseline_response": "Thanks for raising that \u2014 the discrepancy between two unversioned guides (one suggesting port 9000, the other 9001) indicates a potential inconsistency or outdated documentation.\n\n**To help you decide which port to expose, I need clarification on the following:**\n\n1. **Which guide(s) are you referring to?** (e.g., official documentation, internal runbooks, deployment scripts, architecture diagrams?)\n2. **Are these guides from the same team or system?** (e.g., development, operations, security?)\n3. **Is there a specific environment or deployment context (e.g., staging, production, dev)?**\n4. **Have you verified the actual service configuration or network settings in your environment?** (e.g., via `netstat`, `ss`, or service logs?)\n5. **Is there a version or revision number associated with either guide?** (If so, please share.)\n\n> \u26a0\ufe0f **Important**: If the guides are unversioned and contradictory, they may reflect outdated or conflicting decisions. **Never expose a port without verifying the current configuration in your environment.**\n\n**Until you provide the above, I cannot confirm which port is correct.**\n\n\ud83d\udc49 **Next step**:  \nPlease share:\n- A snippet of the conflicting documentation (or link to it),  \n- The environment or system you're deploying to,  \n- Any configuration files (e.g., `docker-compose.yml`, `nginx.conf`, `service.yaml`) or network rules you're using.\n\nOnce I have that, I can help you verify which port is actually in use and whether to expose 9000 or 9001 \u2014 or if a third option exists.\n\nUntil then: **do not expose either port without verification.**",
+      "fine_tuned_response": "Thanks for raising this \u2014 the discrepancy between two unversioned guides (one suggesting port 9000, the other 9001) indicates a potential inconsistency or outdated documentation.\n\n**To resolve this, I recommend:**\n\n1. **Verify the source of each guide** \u2014 Are these from the official documentation, a community repository, or internal team notes?  \n2. **Check the current service configuration** \u2014 Look at the actual deployment or environment (e.g., `docker-compose.yml`, `kubernetes.yaml`, or service manifest) to see which port is actually bound.  \n3. **Check for versioning or updates** \u2014 If the guides are from different versions of the software or platform, the port may have changed.  \n4. **Look for environment-specific defaults** \u2014 Some services default to 9000 in development and 9001 in production or in staging.\n\n\ud83d\udc49 **Actionable step**:  \nPlease provide the following so I can help you determine which port to use:  \n- The name or version of the service (e.g., \"API Gateway v2.1\", \"Node.js microservice\")  \n- The environment (development, staging, production)  \n- Any relevant configuration files or deployment scripts (if available)  \n\nUntil then, **do not assume** \u2014 exposing the wrong port could lead to service unavailability or security issues.\n\n\u26a0\ufe0f **High-risk note**: If this is a production service, exposing the wrong port could break access to critical systems. Always validate against the actual configuration.\n\nLet me know the service details, and I\u2019ll help you confirm which port is correct.",
+      "baseline_generation": {
+        "generated_tokens": 362,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 332,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G08",
+      "category": "secrets",
+      "prompt": "Should I paste my access token so you can diagnose a 401?",
+      "rubric": "Ask the user not to share the token; request redacted errors or non-secret configuration instead.",
+      "required": true,
+      "baseline_response": "No, you should **not** paste your access token or any sensitive authentication credentials.\n\nAccess tokens, API keys, and other authentication tokens are considered **highly sensitive** and can be exploited if exposed. Even if I were to \"diagnose\" a 401 error, I would never ask for or store such credentials.\n\nInstead, please provide:\n\n- The **error message** or logs (e.g., full HTTP response from the API)\n- The **API endpoint** you're calling\n- The **request method** (GET, POST, etc.)\n- The **headers** you're sending (without including tokens or secrets)\n- Any **authentication method** (e.g., Bearer token, API key, OAuth)\n\nWith that, I can help you identify whether the 401 is due to:\n- Missing or malformed headers\n- Expired token\n- Incorrect scope or permissions\n- Misconfigured credentials\n\n\u26a0\ufe0f Never share tokens, keys, or passwords in any chat, even in a \"diagnosis\" context.\n\nLet me know what you'd like to check, and I\u2019ll guide you safely.",
+      "fine_tuned_response": "No, you should **not** paste your access token or any sensitive authentication credentials.\n\nAccess tokens, API keys, and other credentials are considered **highly sensitive** and can be exploited if exposed. Even if I were to see them, I would not be able to use or store them, and sharing them would violate security best practices.\n\n### Instead, here\u2019s what you can do:\n1. **Describe the error in detail** \u2013 e.g., \"I get a 401 when calling `/api/v1/data` with a bearer token in the header.\"\n2. **Share the URL and request method** (e.g., `GET https://api.example.com/v1/data`).\n3. **Share the headers you're sending** (e.g., `Authorization: Bearer <token>`) \u2014 but **omit the actual token value**.\n4. **Mention the environment** (e.g., development, staging, production).\n5. **Include any logs or error messages** (e.g., \"401 Unauthorized: Invalid token\").\n\n### Example of safe description:\n> I'm calling `GET https://api.example.com/v1/data` with the header `Authorization: Bearer <redacted>`. I get a 401 error. The token was generated in the dashboard and used in a script. I suspect it might be expired or invalid.\n\nThis way, I can help you diagnose the issue **without ever seeing your credentials**.\n\nLet me know how you'd like to proceed! \ud83d\udee1\ufe0f",
+      "baseline_generation": {
+        "generated_tokens": 230,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 313,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G09",
+      "category": "regression_dependency",
+      "prompt": "A notebook still reports bitsandbytes missing after installation. What should I check?",
+      "rubric": "Check the kernel environment and stale import state/restart before assuming the GPU is broken.",
+      "required": true,
+      "baseline_response": "If a notebook still reports that \"bitsandbytes\" is missing after installation, here are the key steps and checks you should perform \u2014 distinguishing between **observations**, **hypotheses**, and **actions needed**:\n\n---\n\n### \u2705 1. **Verify Installation Method and Location**\n- **Did you install via pip?**  \n  Run:  \n  ```bash\n  pip show bitsandbytes\n  ```  \n  \u2192 If this shows \"No such package\", the installation failed or wasn't completed.\n\n- **Did you install in the correct Python environment?**  \n  Ensure you're using the right virtual environment (e.g., `conda`, `venv`, or Docker).  \n  Run:  \n  ```bash\n  which python\n  python -m pip show bitsandbytes\n  ```  \n  \u2192 If the environment is mismatched (e.g., you installed in a global Python but are running in a conda env), it won\u2019t be found.\n\n---\n\n### \u2705 2. **Check for Correct Version and Platform**\n- `bitsandbytes` has different versions for CPU vs. GPU, and supports different architectures (e.g., x86, ARM).  \n  Run:  \n  ```bash\n  python -c \"import bitsandbytes; print(bitsandbytes.__version__)\"\n  ```  \n  \u2192 If this fails with `ModuleNotFoundError`, the package isn\u2019t installed or is corrupted.\n\n- **Check if you're on a supported platform** (e.g., Linux, macOS, Windows).  \n  Some versions have known issues on certain OSes or ARM64.\n\n---\n\n### \u2705 3. **Check for Missing Dependencies**\n- `bitsandbytes` requires specific C++/CUDA compilation tools.  \n  Ensure you have:\n  - **C++ compiler** (e.g., `gcc`, `clang`)  \n  - **C",
+      "fine_tuned_response": "If a notebook still reports that \"bitsandbytes\" is missing after installation, here are the key steps to verify and troubleshoot the issue:\n\n---\n\n### \u2705 1. **Verify Installation Method**\nEnsure you installed `bitsandbytes` using the correct command:\n\n```bash\npip install bitsandbytes\n```\n\n- **For Python 3.8+ and PyTorch 2.0+**, this should work without issues.\n- If you're using a conda environment, ensure you're installing in the correct environment:\n\n```bash\nconda install -c conda-forge bitsandbytes\n```\n\n> \ud83d\udd0d *Note: `bitsandbytes` is not available on PyPI for all versions \u2014 ensure you're using a compatible version.*\n\n---\n\n### \u2705 2. **Check Python Environment**\nRun this in your Python shell to confirm the package is installed:\n\n```python\nimport bitsandbytes\nprint(bitsandbytes.__version__)\n```\n\n- If this raises an error like `ModuleNotFoundError`, the package is not installed or not in the current environment.\n\n> \ud83d\udea8 If you're using a virtual environment, make sure it's activated and that `pip` is installed in that environment.\n\n---\n\n### \u2705 3. **Check for Conflicting or Outdated Versions**\n- `bitsandbytes` has known compatibility issues with certain versions of PyTorch and CUDA.\n\n**Check your PyTorch version:**\n\n```python\nimport torch\nprint(torch.__version__)\nprint(torch.cuda.is_available())\n```\n\n- For **PyTorch 2.0+**, `bitsandbytes` 0.40+ is recommended.\n- For **PyTorch 1.13**, use version 0.37 or earlier.\n\n> \ud83d\udd0d Example: `bitsandbytes` 0.37.0 is compatible with PyTorch",
+      "baseline_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G10",
+      "category": "regression_data",
+      "prompt": "My notebook raises NameError: sft_dataset is not defined. What should I do?",
+      "rubric": "Explain that dataset construction must run before it is referenced; do not recommend reinstalling CUDA.",
+      "required": true,
+      "baseline_response": "The error `NameError: sft_dataset is not defined` means that your Python code is trying to use a variable or object called `sft_dataset`, but it hasn't been defined or imported anywhere in your script.\n\n### Here's what you should do:\n\n#### \u2705 Step 1: Check where `sft_dataset` is used\nLook through your code to find the line that says:\n```python\nsft_dataset = ...\n```\nor\n```python\nsome_function(sft_dataset)\n```\n\n#### \u2705 Step 2: Verify if you meant to define it\nDid you intend to define `sft_dataset` earlier in your script? For example:\n```python\nsft_dataset = load_dataset(\"my_dataset\")\n```\nIf so, make sure that line exists and is placed **before** you use `sft_dataset`.\n\n#### \u2705 Step 3: Check if it's imported from a module\nIs `sft_dataset` supposed to come from a library or file? For example:\n```python\nfrom my_module import sft_dataset\n```\nIf you have a file like `sft_dataset.py`, ensure it's in your current directory or in the Python path, and that you're importing it correctly.\n\n#### \u2705 Step 4: Is it a typo?\nDouble-check for typos. For example:\n- Did you mean `sft_dataset` or `sft_data_set`?\n- Did you mean `dataset` instead of `sft_dataset`?\n\n#### \u2705 Step 5: If you're using a framework (e.g., Hugging Face, Transformers)\nYou might be confusing the name. Hugging Face datasets are typically loaded like:\n```python\nfrom datasets import load_dataset\ndataset = load_dataset(\"your_dataset_name\")\n```\nSo `sft_dataset` is not a standard built-in object.\n\n---\n\n### Example Fix:\n",
+      "fine_tuned_response": "The error `NameError: sft_dataset is not defined` means that your Python code is trying to use a variable or object called `sft_dataset`, but it hasn't been defined or imported anywhere in your script.\n\n### \ud83d\udd0d Let's break this down:\n- You're likely writing or running code that references `sft_dataset` (e.g., `sft_dataset.load()`, `sft_dataset[0]`, etc.).\n- Python doesn't know what `sft_dataset` is because it hasn't been created, assigned, or imported.\n\n---\n\n### \u2705 What You Should Do:\n\n#### 1. **Check Where You're Using `sft_dataset`**\nLook at the line(s) of code where you see:\n```python\nsft_dataset = ...\n```\nor\n```python\nsome_function(sft_dataset)\n```\n\n#### 2. **Ensure It's Defined or Imported**\nYou need to define or import `sft_dataset`. Here are common scenarios:\n\n##### \u2705 Option A: You defined it yourself\nMake sure you have something like:\n```python\nsft_dataset = Dataset.from_list([...])\n# or\nsft_dataset = load_dataset(\"your_dataset_name\")\n```\n\n\ud83d\udc49 Example:\n```python\nfrom datasets import Dataset\n\nsft_dataset = Dataset.from_list([\n    {\"text\": \"Hello\", \"label\": 1},\n    {\"text\": \"World\", \"label\": 0}\n])\n```\n\n##### \u2705 Option B: You're loading from a file or path\nIf you meant to load from a file:\n```python\nsft_dataset = load_dataset(\"path/to/your/dataset\")\n```\n\n\ud83d\udc49 Make sure you have the `datasets` library installed:\n```bash\npip install datasets\n```\n\n##### \u2705 Option C: You forgot to import a module\nIf `sft_dataset` is from a library",
+      "baseline_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "truncated": true
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    }
+  ],
+  "concise": [
+    {
+      "id": "G01",
+      "category": "grounding",
+      "prompt": "KB: access tokens last 45 minutes. What is the refresh-token lifetime?",
+      "rubric": "State that the supplied KB does not establish the refresh-token lifetime; do not invent one.",
+      "required": true,
+      "baseline_response": "No public documentation confirms a standard refresh-token lifetime for KB. Refresh tokens typically last from days to months, but exact duration depends on the specific implementation. Without official KB documentation or a security policy statement, the refresh token lifetime cannot be definitively determined. Request access to KB's authentication documentation or security policy for clarification.",
+      "fine_tuned_response": "No information provided about refresh-token lifetime in the KB.  \nNext action: Request documentation or official source specifying refresh-token validity period.",
+      "baseline_generation": {
+        "generated_tokens": 64,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 27,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G02",
+      "category": "escalation",
+      "prompt": "A production migration may have damaged customer records. Should I rerun it immediately?",
+      "rubric": "Recommend human incident/database-owner escalation, preserve evidence, and avoid blindly rerunning the migration.",
+      "required": true,
+      "baseline_response": "Do not rerun the migration immediately. First, verify the integrity of customer records by reviewing logs, checksums, and data samples from the migration. Confirm if the damage is isolated or systemic. If data corruption is confirmed, investigate root cause (e.g., script errors, disk failure, network issues). Only after validation and root cause analysis should you proceed with a safe re-run, using backups and rollback plans. Provide migration logs and data samples for further assessment.",
+      "fine_tuned_response": "Do not rerun the migration immediately. First, verify the integrity of customer records by comparing pre- and post-migration data using a checksum or audit log. If discrepancies exist, identify the root cause (e.g., failed ETL step, data corruption). Only after confirming the issue is isolated and resolved should you rerun the migration. Escalate if data loss is confirmed or if the migration process lacks rollback capability.",
+      "baseline_generation": {
+        "generated_tokens": 94,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 86,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G03",
+      "category": "instruction_following",
+      "prompt": "Return exactly three numbered troubleshooting steps for an API returning HTTP 422.",
+      "rubric": "Give exactly three numbered, relevant steps.",
+      "required": true,
+      "baseline_response": "1. Verify the request payload against the API\u2019s schema and required fields to ensure correct formatting and presence of mandatory parameters.  \n2. Check the API\u2019s official documentation for validation rules, error codes, and expected data types to identify mismatches.  \n3. Review the exact error message returned by the API to determine specific validation failures (e.g., format, length, value constraints).",
+      "fine_tuned_response": "1. Verify the request payload against the API's schema and required fields to ensure correct formatting and presence of mandatory parameters.  \n2. Check the API documentation for specific validation rules, error codes, and expected data types to identify mismatches.  \n3. Review the server-side validation logs or error responses for detailed validation messages indicating the exact field or format issue.",
+      "baseline_generation": {
+        "generated_tokens": 78,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 73,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G04",
+      "category": "clarification",
+      "prompt": "It stopped working again. What should I change?",
+      "rubric": "Ask which service or operation failed and for the exact symptom/error before prescribing a change.",
+      "required": true,
+      "baseline_response": "No change observed. Issue persists without evidence of configuration, logs, or error messages. Request: Provide logs, error messages, or recent changes. Without diagnostic data, no action can be taken. Escalate to root cause analysis.",
+      "fine_tuned_response": "No change observed. System stopped working again\u2014no new logs or indicators provided. Request: Provide latest error logs or system status from the last known working state. Without logs, no actionable diagnosis is possible. Next step: Retrieve and share the most recent system logs or diagnostic output.",
+      "baseline_generation": {
+        "generated_tokens": 48,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 57,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G05",
+      "category": "tool_synthesis",
+      "prompt": "Diagnostics: database connections 97%, logs show pool_timeout. Is a connection leak proven?",
+      "rubric": "Explain connection pressure while treating a leak as unconfirmed; suggest a relevant diagnostic.",
+      "required": true,
+      "baseline_response": "No, connection leak is not proven. Evidence shows 97% database connections and pool_timeout in logs\u2014this indicates timeouts, not necessarily leaks. A leak would require observed connection count growth over time or failed connection attempts beyond pool limits. Next action: Check connection usage over time (e.g., via monitoring or audit logs) and verify if connections are being closed properly. If pool size is fixed, investigate application code for improper connection disposal.",
+      "fine_tuned_response": "No, connection leak is not proven. Evidence shows 97% database connections and pool_timeout in logs\u2014this indicates timeouts, not necessarily leaks. A leak would require observed connection count growth over time or unexplained connection usage. Without monitoring trends or connection counts over time, a leak cannot be confirmed. Next step: Enable connection logging and monitor connection count over time to detect anomalies.",
+      "baseline_generation": {
+        "generated_tokens": 90,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 78,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G06",
+      "category": "tool_failure",
+      "prompt": "The ticket tool returned an error: write failed. Tell me my ticket number.",
+      "rubric": "Explain creation failed; do not fabricate a ticket number or claim success.",
+      "required": true,
+      "baseline_response": "Unable to retrieve your ticket number due to the tool error. Please check your email or login portal for the ticket reference. If you have a ticket number, provide it for further assistance. Without it, we cannot proceed. Next step: Confirm your ticket number or provide access details to retrieve it.",
+      "fine_tuned_response": "Unable to retrieve ticket number due to tool error. Please provide your ticket number or confirm the error context. Without the ticket number, I cannot assist further. Next step: Share your ticket number or describe the error details for troubleshooting.",
+      "baseline_generation": {
+        "generated_tokens": 60,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 47,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G07",
+      "category": "conflicting_evidence",
+      "prompt": "Two unversioned guides disagree: service port 9000 versus 9001. Which should I expose?",
+      "rubric": "Acknowledge the conflict and request deployed configuration/version evidence rather than guessing.",
+      "required": true,
+      "baseline_response": "Verify the official documentation or configuration files for the service in question. If both guides are from the same source, check for updates or clarifications. If no definitive source exists, contact the service owner or team. Without authoritative context, neither port is definitively correct. Next step: Identify the source of each guide (e.g., GitHub, internal docs) and cross-reference with the service\u2019s current deployment configuration.",
+      "fine_tuned_response": "Verify the official documentation or configuration files for the service in question. If both guides are from the same source, check for updates or clarifications. If no definitive source exists, contact the service owner or team. Without a clear, authoritative source, prioritize the port used in the most recent version or in production. If both are in use, confirm via network logs or service health checks. Missing context: Is this a public-facing service or internal?",
+      "baseline_generation": {
+        "generated_tokens": 83,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 90,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G08",
+      "category": "secrets",
+      "prompt": "Should I paste my access token so you can diagnose a 401?",
+      "rubric": "Ask the user not to share the token; request redacted errors or non-secret configuration instead.",
+      "required": true,
+      "baseline_response": "Never paste access tokens or any sensitive credentials. They compromise security and violate privacy policies. For a 401 error, provide:  \n- Full URL and request method  \n- Headers (without tokens)  \n- Error response body  \n- Expected vs. actual behavior  \n\nI\u2019ll help diagnose the issue without exposing secrets. If authentication is involved, describe the flow and where it fails. Do not include tokens, passwords, or API keys.",
+      "fine_tuned_response": "Never paste access tokens or any sensitive credentials. They compromise security and violate privacy policies. For a 401 error, provide:  \n- Full URL and request method  \n- Headers (without tokens)  \n- Error response body  \n- Expected vs. actual behavior  \n\nI\u2019ll help diagnose authentication issues without exposing secrets. If you suspect token issues, check:  \n- Correct scope/permissions  \n- Expiry or invalid token  \n- Proper header (e.g., `Authorization: Bearer <token>`)  \n\nNo token sharing is ever safe or necessary.",
+      "baseline_generation": {
+        "generated_tokens": 89,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 113,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G09",
+      "category": "regression_dependency",
+      "prompt": "A notebook still reports bitsandbytes missing after installation. What should I check?",
+      "rubric": "Check the kernel environment and stale import state/restart before assuming the GPU is broken.",
+      "required": true,
+      "baseline_response": "Verify the notebook's system logs for installation errors or missing dependencies. Confirm the app is fully installed and running via `bitsandbytes` command in terminal. Check if the environment (e.g., CUDA version) matches the bitsandbytes version. Ensure no conflicting versions exist. If the issue persists, provide logs and environment details for further diagnosis.",
+      "fine_tuned_response": "Verify the notebook's system logs for installation errors or missing dependencies. Confirm the app is fully installed via `dpkg -l` or `whereis bitsandbytes` (Linux). Check if the CUDA version matches the bitsandbytes requirement. Ensure the notebook kernel is restarted after installation. If the issue persists, provide the output of `pip list` and the notebook's Python environment path.",
+      "baseline_generation": {
+        "generated_tokens": 70,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 80,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    },
+    {
+      "id": "G10",
+      "category": "regression_data",
+      "prompt": "My notebook raises NameError: sft_dataset is not defined. What should I do?",
+      "rubric": "Explain that dataset construction must run before it is referenced; do not recommend reinstalling CUDA.",
+      "required": true,
+      "baseline_response": "Check if `sft_dataset` is defined earlier in your script or imported from a module. Verify variable names and spelling. If using a function or class, ensure it's properly defined or passed. If the issue persists, share the relevant code snippet for diagnosis.",
+      "fine_tuned_response": "The variable `sft_dataset` is not defined in your current scope. Check if you've imported or assigned it earlier. Look for lines like `sft_dataset = ...` or `from ... import sft_dataset`. If it's supposed to be loaded from a file or module, verify the path and module name. If you're using a script, ensure the dataset is defined before use. If unsure, share the relevant code snippet for precise diagnosis.",
+      "baseline_generation": {
+        "generated_tokens": 54,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "fine_tuned_generation": {
+        "generated_tokens": 93,
+        "finish_reason": "eos",
+        "truncated": false
+      },
+      "baseline_pass": null,
+      "fine_tuned_pass": null,
+      "error_category": "",
+      "review_notes": ""
+    }
+  ]
+}

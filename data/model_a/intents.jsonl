@@ -1,0 +1,160 @@
+{"text": "I cannot log into my account", "label": "authentication"}
+{"text": "My password is not working", "label": "authentication"}
+{"text": "The login page keeps rejecting my credentials", "label": "authentication"}
+{"text": "I forgot my password and cannot sign in", "label": "authentication"}
+{"text": "My authentication token has expired", "label": "authentication"}
+{"text": "The access token is being rejected", "label": "authentication"}
+{"text": "I keep getting unauthorized when logging in", "label": "authentication"}
+{"text": "Two factor authentication is not working", "label": "authentication"}
+{"text": "The verification code never arrives", "label": "authentication"}
+{"text": "My account is locked after several login attempts", "label": "authentication"}
+{"text": "How do I reset my login password?", "label": "authentication"}
+{"text": "The OAuth login is failing", "label": "authentication"}
+{"text": "My session keeps expiring immediately", "label": "authentication"}
+{"text": "I get a 401 error when trying to sign in", "label": "authentication"}
+{"text": "The authentication credentials are invalid", "label": "authentication"}
+{"text": "I cannot refresh my access token", "label": "authentication"}
+{"text": "Login works for other users but not for me", "label": "authentication"}
+{"text": "The authentication service rejects my token", "label": "authentication"}
+{"text": "I am stuck on the account verification step", "label": "authentication"}
+{"text": "Why does my application keep asking me to log in?", "label": "authentication"}
+{"text": "The server cannot connect to the internet", "label": "network"}
+{"text": "My application cannot reach the remote server", "label": "network"}
+{"text": "The network connection keeps timing out", "label": "network"}
+{"text": "I am getting connection refused errors", "label": "network"}
+{"text": "The service cannot connect to the database server", "label": "network"}
+{"text": "Requests to the server are timing out", "label": "network"}
+{"text": "The API is unreachable from my machine", "label": "network"}
+{"text": "DNS resolution is failing", "label": "network"}
+{"text": "My application cannot resolve the hostname", "label": "network"}
+{"text": "The connection drops randomly", "label": "network"}
+{"text": "I cannot connect to the service over HTTPS", "label": "network"}
+{"text": "The server is unreachable from the container", "label": "network"}
+{"text": "Network requests are extremely slow", "label": "network"}
+{"text": "The connection times out after 30 seconds", "label": "network"}
+{"text": "My Docker container cannot access the internet", "label": "network"}
+{"text": "The application cannot connect to the remote host", "label": "network"}
+{"text": "I am getting a network unreachable error", "label": "network"}
+{"text": "The proxy connection is failing", "label": "network"}
+{"text": "The service works locally but not over the network", "label": "network"}
+{"text": "Why can my machine not reach the server?", "label": "network"}
+{"text": "My application fails when I deploy it", "label": "deployment"}
+{"text": "The deployment keeps failing", "label": "deployment"}
+{"text": "The application works locally but fails in production", "label": "deployment"}
+{"text": "How do I deploy this application?", "label": "deployment"}
+{"text": "The production deployment is stuck", "label": "deployment"}
+{"text": "My deployment pipeline failed", "label": "deployment"}
+{"text": "The new version was not deployed", "label": "deployment"}
+{"text": "The deployment process stops during the build", "label": "deployment"}
+{"text": "The application crashes after deployment", "label": "deployment"}
+{"text": "The production server is still running the old version", "label": "deployment"}
+{"text": "The deployment job keeps getting cancelled", "label": "deployment"}
+{"text": "How can I roll back my deployment?", "label": "deployment"}
+{"text": "The container fails to start after deployment", "label": "deployment"}
+{"text": "My CI deployment is not triggering", "label": "deployment"}
+{"text": "The deployment succeeded but the application is unavailable", "label": "deployment"}
+{"text": "I get an error while deploying to production", "label": "deployment"}
+{"text": "The release pipeline is stuck", "label": "deployment"}
+{"text": "The application is missing after deployment", "label": "deployment"}
+{"text": "The deployment environment has incorrect settings", "label": "deployment"}
+{"text": "Why does my deployment work locally but not in production?", "label": "deployment"}
+{"text": "I cannot connect to my database", "label": "database"}
+{"text": "The database connection is failing", "label": "database"}
+{"text": "My SQL query returns an error", "label": "database"}
+{"text": "The database is running out of connections", "label": "database"}
+{"text": "How do I create a database table?", "label": "database"}
+{"text": "My database queries are very slow", "label": "database"}
+{"text": "The application cannot find the database", "label": "database"}
+{"text": "I am getting a database timeout", "label": "database"}
+{"text": "The database credentials are not accepted", "label": "database"}
+{"text": "My table data disappeared", "label": "database"}
+{"text": "The migration failed on the database", "label": "database"}
+{"text": "How do I run a database migration?", "label": "database"}
+{"text": "The database schema is out of date", "label": "database"}
+{"text": "I get a duplicate key error from the database", "label": "database"}
+{"text": "The database server is not responding", "label": "database"}
+{"text": "My application cannot execute SQL queries", "label": "database"}
+{"text": "How can I back up the database?", "label": "database"}
+{"text": "The database transaction keeps failing", "label": "database"}
+{"text": "I cannot insert records into the table", "label": "database"}
+{"text": "Why is my database query taking so long?", "label": "database"}
+{"text": "PyTorch cannot detect my GPU", "label": "gpu"}
+{"text": "CUDA is not detecting my graphics card", "label": "gpu"}
+{"text": "My GPU is not being used during training", "label": "gpu"}
+{"text": "I am getting a CUDA out of memory error", "label": "gpu"}
+{"text": "The model training is running on the CPU instead of the GPU", "label": "gpu"}
+{"text": "How do I check if CUDA is available?", "label": "gpu"}
+{"text": "My GPU memory is full", "label": "gpu"}
+{"text": "CUDA initialization failed", "label": "gpu"}
+{"text": "The NVIDIA driver is not detected", "label": "gpu"}
+{"text": "TensorFlow cannot find my GPU", "label": "gpu"}
+{"text": "Why is GPU utilization at zero?", "label": "gpu"}
+{"text": "My CUDA version is incompatible with PyTorch", "label": "gpu"}
+{"text": "The GPU crashes when I start training", "label": "gpu"}
+{"text": "How can I move my model to the GPU?", "label": "gpu"}
+{"text": "I keep getting CUDA memory errors", "label": "gpu"}
+{"text": "The GPU is available but training does not use it", "label": "gpu"}
+{"text": "My graphics card is not visible inside Docker", "label": "gpu"}
+{"text": "CUDA cannot initialize the GPU", "label": "gpu"}
+{"text": "The model runs out of VRAM during inference", "label": "gpu"}
+{"text": "Why does my machine detect the GPU but PyTorch does not?", "label": "gpu"}
+{"text": "The API returns a 500 error", "label": "api"}
+{"text": "How do I call this API?", "label": "api"}
+{"text": "My API request is failing", "label": "api"}
+{"text": "The endpoint returns invalid JSON", "label": "api"}
+{"text": "I cannot send a POST request to the API", "label": "api"}
+{"text": "The API response is missing a field", "label": "api"}
+{"text": "How do I authenticate an API request?", "label": "api"}
+{"text": "The API endpoint returns 404", "label": "api"}
+{"text": "My GET request returns an unexpected response", "label": "api"}
+{"text": "The API is returning a 429 error", "label": "api"}
+{"text": "How can I pass parameters to the API?", "label": "api"}
+{"text": "The API request body is rejected", "label": "api"}
+{"text": "I cannot connect to the API endpoint", "label": "api"}
+{"text": "The API returns an empty response", "label": "api"}
+{"text": "How do I create an API key?", "label": "api"}
+{"text": "My API calls suddenly started failing", "label": "api"}
+{"text": "The endpoint is returning the wrong status code", "label": "api"}
+{"text": "How do I send headers with the API request?", "label": "api"}
+{"text": "The API rate limit is being exceeded", "label": "api"}
+{"text": "Why does this API request return an error?", "label": "api"}
+{"text": "I cannot install the transformers package", "label": "package"}
+{"text": "Pip says the package could not be found", "label": "package"}
+{"text": "My Python package installation failed", "label": "package"}
+{"text": "There is a dependency conflict between packages", "label": "package"}
+{"text": "How do I install this Python library?", "label": "package"}
+{"text": "The package version is incompatible", "label": "package"}
+{"text": "Pip cannot resolve my dependencies", "label": "package"}
+{"text": "I get ModuleNotFoundError after installing the package", "label": "package"}
+{"text": "How do I upgrade a Python package?", "label": "package"}
+{"text": "The package is not available for my Python version", "label": "package"}
+{"text": "My requirements file fails to install", "label": "package"}
+{"text": "Pip installed the package but Python cannot import it", "label": "package"}
+{"text": "How do I uninstall a Python package?", "label": "package"}
+{"text": "The package requires a different version of Python", "label": "package"}
+{"text": "I am getting an error while running pip install", "label": "package"}
+{"text": "Two packages require incompatible versions", "label": "package"}
+{"text": "How can I create a Python virtual environment?", "label": "package"}
+{"text": "My dependency installation is stuck", "label": "package"}
+{"text": "The package manager cannot resolve the dependencies", "label": "package"}
+{"text": "Why can I install the package but not import it?", "label": "package"}
+{"text": "How do I get started with the platform?", "label": "general"}
+{"text": "Where can I find the documentation?", "label": "general"}
+{"text": "Can you explain how this system works?", "label": "general"}
+{"text": "What features does the platform provide?", "label": "general"}
+{"text": "Where can I find an example project?", "label": "general"}
+{"text": "Is there a beginner guide available?", "label": "general"}
+{"text": "How can I learn more about the platform?", "label": "general"}
+{"text": "Where can I find the configuration documentation?", "label": "general"}
+{"text": "What are the system requirements?", "label": "general"}
+{"text": "Can you explain the basic workflow?", "label": "general"}
+{"text": "Where can I find the user guide?", "label": "general"}
+{"text": "Is there an example of how to use this system?", "label": "general"}
+{"text": "What does this service do?", "label": "general"}
+{"text": "How can I configure the application?", "label": "general"}
+{"text": "Where can I find troubleshooting information?", "label": "general"}
+{"text": "Is there a quick start tutorial?", "label": "general"}
+{"text": "What is the recommended way to use this platform?", "label": "general"}
+{"text": "Where can I find more information about this feature?", "label": "general"}
+{"text": "Can you give me an overview of the system?", "label": "general"}
+{"text": "I need general help using the application", "label": "general"}

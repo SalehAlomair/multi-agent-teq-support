@@ -1,0 +1,1048 @@
+{
+  "dataset": "data/routing/router_eval.jsonl",
+  "case_count": 32,
+  "llm_model": "local-qwen",
+  "metrics": {
+    "router_a": {
+      "accuracy": 0.5625,
+      "macro_f1": 0.5590463458110517,
+      "f1_by_route": {
+        "qa": 0.7058823529411765,
+        "support_specialist": 0.5,
+        "tools": 0.36363636363636365,
+        "escalate": 0.6666666666666666
+      },
+      "average_latency_ms": 8.659005093790029,
+      "confidence_threshold": 0.8,
+      "expected_calibration_error": 0.09717534529045224,
+      "brier_score": 0.18118895260826676
+    },
+    "router_b": {
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "f1_by_route": {
+        "qa": 1.0,
+        "support_specialist": 1.0,
+        "tools": 1.0,
+        "escalate": 1.0
+      },
+      "average_latency_ms": 5787.140777156196,
+      "json_valid_rate": 1,
+      "failure_modes": {}
+    },
+    "hybrid": {
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "f1_by_route": {
+        "qa": 1.0,
+        "support_specialist": 1.0,
+        "tools": 1.0,
+        "escalate": 1.0
+      },
+      "average_latency_ms": 4359.446028999969,
+      "fallback_rate": 0.75
+    }
+  },
+  "recommended_policy": "router_b",
+  "recommendation_basis": "router_b achieved the best measured accuracy and Macro F1 combination. Hard escalation rules remain first in the hybrid policy.",
+  "cases": {
+    "router_a": [
+      {
+        "id": "R001",
+        "text": "According to the documentation, how long does an access token remain valid?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.005273999704513699,
+        "correct": true
+      },
+      {
+        "id": "R002",
+        "text": "What does the manual say about rolling back a deployment?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.00702499983162852,
+        "correct": true
+      },
+      {
+        "id": "R003",
+        "text": "Use the docs to explain which port the database service uses.",
+        "expected_route": "qa",
+        "predicted_route": "support_specialist",
+        "confidence": 0.37899306416511536,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 56.40056300035212,
+        "correct": false
+      },
+      {
+        "id": "R004",
+        "text": "Where in the documentation is the password reset procedure described?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.005939000402577221,
+        "correct": true
+      },
+      {
+        "id": "R005",
+        "text": "What are the documented system requirements for this platform?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.532207190990448,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 10.053676000097767,
+        "correct": true
+      },
+      {
+        "id": "R006",
+        "text": "From the trusted guide, explain how OAuth refresh tokens work.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.3223010003566742,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 11.568160000024363,
+        "correct": true
+      },
+      {
+        "id": "R007",
+        "text": "Find the documented timeout configured for the API gateway.",
+        "expected_route": "qa",
+        "predicted_route": "support_specialist",
+        "confidence": 0.3080679476261139,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 19.947246000810992,
+        "correct": false
+      },
+      {
+        "id": "R008",
+        "text": "What does the manual say about creating a database backup?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.007118000212358311,
+        "correct": true
+      },
+      {
+        "id": "R009",
+        "text": "Check whether the production API is healthy right now.",
+        "expected_route": "tools",
+        "predicted_route": "support_specialist",
+        "confidence": 0.22531305253505707,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.5118280001333915,
+        "correct": false
+      },
+      {
+        "id": "R010",
+        "text": "Look up the currently installed transformers package version.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.2663875222206116,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.746328999724938,
+        "correct": true
+      },
+      {
+        "id": "R011",
+        "text": "Search existing tickets for similar authentication failures.",
+        "expected_route": "tools",
+        "predicted_route": "support_specialist",
+        "confidence": 0.19168630242347717,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.568298999809485,
+        "correct": false
+      },
+      {
+        "id": "R012",
+        "text": "Inspect these service logs and find the latest fatal error.",
+        "expected_route": "tools",
+        "predicted_route": "qa",
+        "confidence": 0.2968910038471222,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.737136000287137,
+        "correct": false
+      },
+      {
+        "id": "R013",
+        "text": "Create a support ticket for this unresolved network issue.",
+        "expected_route": "tools",
+        "predicted_route": "qa",
+        "confidence": 0.21128830313682556,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.249067999509862,
+        "correct": false
+      },
+      {
+        "id": "R014",
+        "text": "Query the live database connection utilization.",
+        "expected_route": "tools",
+        "predicted_route": "support_specialist",
+        "confidence": 0.3661735951900482,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.398653999895032,
+        "correct": false
+      },
+      {
+        "id": "R015",
+        "text": "Check whether version 5.0 of this package is available.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.30486395955085754,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.071265999911702,
+        "correct": true
+      },
+      {
+        "id": "R016",
+        "text": "Run the diagnostic checks for the GPU worker.",
+        "expected_route": "tools",
+        "predicted_route": "support_specialist",
+        "confidence": 0.3936939537525177,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 10.803205999764032,
+        "correct": false
+      },
+      {
+        "id": "R017",
+        "text": "My API returns 422 after deployment; help me troubleshoot it.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.24818599224090576,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.899648000398884,
+        "correct": true
+      },
+      {
+        "id": "R018",
+        "text": "The application works locally but times out in production. What should I investigate?",
+        "expected_route": "support_specialist",
+        "predicted_route": "qa",
+        "confidence": 0.25735995173454285,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.252751999658358,
+        "correct": false
+      },
+      {
+        "id": "R019",
+        "text": "CUDA is detected but model training still runs on the CPU.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.39998534321784973,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.000510000580107,
+        "correct": true
+      },
+      {
+        "id": "R020",
+        "text": "Users cannot sign in after enabling multi-factor authentication.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.19095586240291595,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.870965999951295,
+        "correct": true
+      },
+      {
+        "id": "R021",
+        "text": "My database migration fails halfway through with a duplicate key error.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.39200881123542786,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 8.019400999728532,
+        "correct": true
+      },
+      {
+        "id": "R022",
+        "text": "The container exits immediately after a successful deployment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.3438687324523926,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.330008000077214,
+        "correct": true
+      },
+      {
+        "id": "R023",
+        "text": "Requests randomly fail through the proxy but work directly.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.18931736052036285,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 6.530735000524146,
+        "correct": true
+      },
+      {
+        "id": "R024",
+        "text": "Pip installs the library, but Python cannot import it in my virtual environment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "tools",
+        "confidence": 0.3163142502307892,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 15.16031200026191,
+        "correct": false
+      },
+      {
+        "id": "R025",
+        "text": "Production down and customers cannot access the service.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.006094999662309419,
+        "correct": true
+      },
+      {
+        "id": "R026",
+        "text": "We may have permanent data loss in the customer database.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.005259999852569308,
+        "correct": true
+      },
+      {
+        "id": "R027",
+        "text": "A security breach may have exposed authentication tokens.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.005187999704503454,
+        "correct": true
+      },
+      {
+        "id": "R028",
+        "text": "Stop automated actions because database corruption is suspected.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "source": "rule",
+        "needs_fallback": false,
+        "latency_ms": 0.006457999916165136,
+        "correct": true
+      },
+      {
+        "id": "R029",
+        "text": "Customer records appear to be disappearing from production.",
+        "expected_route": "escalate",
+        "predicted_route": "support_specialist",
+        "confidence": 0.2443011850118637,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 15.332091000345827,
+        "correct": false
+      },
+      {
+        "id": "R030",
+        "text": "An unknown actor is using administrator credentials in production.",
+        "expected_route": "escalate",
+        "predicted_route": "support_specialist",
+        "confidence": 0.16760018467903137,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 16.183506999368547,
+        "correct": false
+      },
+      {
+        "id": "R031",
+        "text": "The payment service is unavailable for every customer and rollback failed.",
+        "expected_route": "escalate",
+        "predicted_route": "support_specialist",
+        "confidence": 0.1900624781847,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 15.887315000327362,
+        "correct": false
+      },
+      {
+        "id": "R032",
+        "text": "Sensitive user information may have been leaked outside the company.",
+        "expected_route": "escalate",
+        "predicted_route": "support_specialist",
+        "confidence": 0.15256190299987793,
+        "source": "classifier",
+        "needs_fallback": true,
+        "latency_ms": 7.517130000451289,
+        "correct": false
+      }
+    ],
+    "router_b": [
+      {
+        "id": "R001",
+        "text": "According to the documentation, how long does an access token remain valid?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 4606.771632000346,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R002",
+        "text": "What does the manual say about rolling back a deployment?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 3988.2953989999805,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R003",
+        "text": "Use the docs to explain which port the database service uses.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 3929.46467999991,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R004",
+        "text": "Where in the documentation is the password reset procedure described?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 8766.996848999952,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R005",
+        "text": "What are the documented system requirements for this platform?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 9969.410208999761,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R006",
+        "text": "From the trusted guide, explain how OAuth refresh tokens work.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 7816.756954000084,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R007",
+        "text": "Find the documented timeout configured for the API gateway.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.95,
+        "valid_json": true,
+        "latency_ms": 12566.757342000528,
+        "raw_response": "{\"route\": \"qa\", \"confidence\": 0.95}",
+        "error": null
+      },
+      {
+        "id": "R008",
+        "text": "What does the manual say about creating a database backup?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 4970.394981000027,
+        "raw_response": "{\"route\":\"qa\",\"confidence\":0.98}",
+        "error": null
+      },
+      {
+        "id": "R009",
+        "text": "Check whether the production API is healthy right now.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 5603.8571930002945,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R010",
+        "text": "Look up the currently installed transformers package version.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 5325.022043999525,
+        "raw_response": "{\n  \"route\": \"tools\",\n  \"confidence\": 0.98\n}",
+        "error": null
+      },
+      {
+        "id": "R011",
+        "text": "Search existing tickets for similar authentication failures.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 5438.728164999702,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R012",
+        "text": "Inspect these service logs and find the latest fatal error.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 5234.977838999839,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R013",
+        "text": "Create a support ticket for this unresolved network issue.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 8012.727079999422,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R014",
+        "text": "Query the live database connection utilization.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.99,
+        "valid_json": true,
+        "latency_ms": 4931.979789999787,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.99}",
+        "error": null
+      },
+      {
+        "id": "R015",
+        "text": "Check whether version 5.0 of this package is available.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.97,
+        "valid_json": true,
+        "latency_ms": 5146.737518000009,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.97}",
+        "error": null
+      },
+      {
+        "id": "R016",
+        "text": "Run the diagnostic checks for the GPU worker.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 4047.067935999621,
+        "raw_response": "{\"route\": \"tools\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R017",
+        "text": "My API returns 422 after deployment; help me troubleshoot it.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.93,
+        "valid_json": true,
+        "latency_ms": 4115.364463999867,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.93}",
+        "error": null
+      },
+      {
+        "id": "R018",
+        "text": "The application works locally but times out in production. What should I investigate?",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 4096.621886999856,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.92}",
+        "error": null
+      },
+      {
+        "id": "R019",
+        "text": "CUDA is detected but model training still runs on the CPU.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 4477.897025999482,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.92}",
+        "error": null
+      },
+      {
+        "id": "R020",
+        "text": "Users cannot sign in after enabling multi-factor authentication.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 4361.563972000113,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.92}",
+        "error": null
+      },
+      {
+        "id": "R021",
+        "text": "My database migration fails halfway through with a duplicate key error.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.86,
+        "valid_json": true,
+        "latency_ms": 4229.54092100008,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.86}",
+        "error": null
+      },
+      {
+        "id": "R022",
+        "text": "The container exits immediately after a successful deployment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 4039.468676999604,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.92}",
+        "error": null
+      },
+      {
+        "id": "R023",
+        "text": "Requests randomly fail through the proxy but work directly.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 4214.721782999732,
+        "raw_response": "{\"route\": \"support_specialist\", \"confidence\": 0.92}",
+        "error": null
+      },
+      {
+        "id": "R024",
+        "text": "Pip installs the library, but Python cannot import it in my virtual environment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "confidence": 0.92,
+        "valid_json": true,
+        "latency_ms": 9885.04770200052,
+        "raw_response": "{\n  \"route\": \"support_specialist\",\n  \"confidence\": 0.92\n}",
+        "error": null
+      },
+      {
+        "id": "R025",
+        "text": "Production down and customers cannot access the service.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 6849.150374000601,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      },
+      {
+        "id": "R026",
+        "text": "We may have permanent data loss in the customer database.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 6729.985257999942,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      },
+      {
+        "id": "R027",
+        "text": "A security breach may have exposed authentication tokens.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 5045.094981999682,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R028",
+        "text": "Stop automated actions because database corruption is suspected.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 5006.630629000028,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      },
+      {
+        "id": "R029",
+        "text": "Customer records appear to be disappearing from production.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 0.98,
+        "valid_json": true,
+        "latency_ms": 4818.452663000244,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 0.98}",
+        "error": null
+      },
+      {
+        "id": "R030",
+        "text": "An unknown actor is using administrator credentials in production.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 5675.626614999601,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      },
+      {
+        "id": "R031",
+        "text": "The payment service is unavailable for every customer and rollback failed.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 7301.048189000539,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      },
+      {
+        "id": "R032",
+        "text": "Sensitive user information may have been leaked outside the company.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "confidence": 1.0,
+        "valid_json": true,
+        "latency_ms": 3986.3441159996,
+        "raw_response": "{\"route\": \"escalate\", \"confidence\": 1.0}",
+        "error": null
+      }
+    ],
+    "hybrid": [
+      {
+        "id": "R001",
+        "text": "According to the documentation, how long does an access token remain valid?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.005273999704513699
+      },
+      {
+        "id": "R002",
+        "text": "What does the manual say about rolling back a deployment?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.00702499983162852
+      },
+      {
+        "id": "R003",
+        "text": "Use the docs to explain which port the database service uses.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 3985.865243000262
+      },
+      {
+        "id": "R004",
+        "text": "Where in the documentation is the password reset procedure described?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.005939000402577221
+      },
+      {
+        "id": "R005",
+        "text": "What are the documented system requirements for this platform?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 9979.46388499986
+      },
+      {
+        "id": "R006",
+        "text": "From the trusted guide, explain how OAuth refresh tokens work.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 7828.325114000108
+      },
+      {
+        "id": "R007",
+        "text": "Find the documented timeout configured for the API gateway.",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 12586.70458800134
+      },
+      {
+        "id": "R008",
+        "text": "What does the manual say about creating a database backup?",
+        "expected_route": "qa",
+        "predicted_route": "qa",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.007118000212358311
+      },
+      {
+        "id": "R009",
+        "text": "Check whether the production API is healthy right now.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5611.369021000428
+      },
+      {
+        "id": "R010",
+        "text": "Look up the currently installed transformers package version.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5331.76837299925
+      },
+      {
+        "id": "R011",
+        "text": "Search existing tickets for similar authentication failures.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5445.296463999512
+      },
+      {
+        "id": "R012",
+        "text": "Inspect these service logs and find the latest fatal error.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5242.714975000126
+      },
+      {
+        "id": "R013",
+        "text": "Create a support ticket for this unresolved network issue.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 8019.976147998932
+      },
+      {
+        "id": "R014",
+        "text": "Query the live database connection utilization.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4938.378443999682
+      },
+      {
+        "id": "R015",
+        "text": "Check whether version 5.0 of this package is available.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5153.808783999921
+      },
+      {
+        "id": "R016",
+        "text": "Run the diagnostic checks for the GPU worker.",
+        "expected_route": "tools",
+        "predicted_route": "tools",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4057.871141999385
+      },
+      {
+        "id": "R017",
+        "text": "My API returns 422 after deployment; help me troubleshoot it.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4122.264112000266
+      },
+      {
+        "id": "R018",
+        "text": "The application works locally but times out in production. What should I investigate?",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4103.874638999514
+      },
+      {
+        "id": "R019",
+        "text": "CUDA is detected but model training still runs on the CPU.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4484.897536000062
+      },
+      {
+        "id": "R020",
+        "text": "Users cannot sign in after enabling multi-factor authentication.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4368.434938000064
+      },
+      {
+        "id": "R021",
+        "text": "My database migration fails halfway through with a duplicate key error.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4237.560321999808
+      },
+      {
+        "id": "R022",
+        "text": "The container exits immediately after a successful deployment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4045.7986849996814
+      },
+      {
+        "id": "R023",
+        "text": "Requests randomly fail through the proxy but work directly.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4221.252518000256
+      },
+      {
+        "id": "R024",
+        "text": "Pip installs the library, but Python cannot import it in my virtual environment.",
+        "expected_route": "support_specialist",
+        "predicted_route": "support_specialist",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 9900.208014000782
+      },
+      {
+        "id": "R025",
+        "text": "Production down and customers cannot access the service.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.006094999662309419
+      },
+      {
+        "id": "R026",
+        "text": "We may have permanent data loss in the customer database.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.005259999852569308
+      },
+      {
+        "id": "R027",
+        "text": "A security breach may have exposed authentication tokens.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.005187999704503454
+      },
+      {
+        "id": "R028",
+        "text": "Stop automated actions because database corruption is suspected.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "rule",
+        "used_fallback": false,
+        "latency_ms": 0.006457999916165136
+      },
+      {
+        "id": "R029",
+        "text": "Customer records appear to be disappearing from production.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 4833.78475400059
+      },
+      {
+        "id": "R030",
+        "text": "An unknown actor is using administrator credentials in production.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 5691.810121998969
+      },
+      {
+        "id": "R031",
+        "text": "The payment service is unavailable for every customer and rollback failed.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 7316.935504000867
+      },
+      {
+        "id": "R032",
+        "text": "Sensitive user information may have been leaked outside the company.",
+        "expected_route": "escalate",
+        "predicted_route": "escalate",
+        "source": "llm",
+        "used_fallback": true,
+        "latency_ms": 3993.8612460000513
+      }
+    ]
+  }
+}

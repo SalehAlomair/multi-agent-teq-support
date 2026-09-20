@@ -84,7 +84,52 @@ Run the API and Open WebUI together:
 docker compose up --build
 ```
 
-Open WebUI will be available at `http://localhost:3000`. For Dokploy, create a
+Open WebUI will be available at `http://localhost:3001`. For Dokploy, create a
 Docker Compose application, add the variables from `.env.example`, mount the
 `models` and `data` directories, expose port 8000 with HTTPS, and point Open
 WebUI to the API base URL ending in `/v1`.
+
+## Run on macOS
+
+The final Model A, Model B, and Model C adapter artifacts are stored with Git
+LFS. Training checkpoints and GGUF base models are intentionally excluded.
+
+Install Git LFS before cloning, then prepare the project:
+
+```bash
+brew install git-lfs
+git lfs install
+git clone https://github.com/SalehAlomair/multi-agent-teq-support.git
+cd multi-agent-teq-support
+git lfs pull
+cp .env.example .env
+```
+
+To reuse the Qwen llama-server running on the Windows PC, keep Tailscale and
+the Windows startup script running and set this value in the Mac's `.env`:
+
+```dotenv
+LLAMA_SERVER_DOCKER_URL=http://100.79.62.113:8080/v1/chat/completions
+```
+
+Verify that the Mac can reach Qwen before starting the application:
+
+```bash
+curl http://100.79.62.113:8080/v1/models
+```
+
+Run the complete readiness check:
+
+```bash
+./scripts/check-mac-ready.sh
+```
+
+Then start the complete application:
+
+```bash
+docker compose up --build -d
+docker compose ps
+```
+
+Open `http://localhost:3001`. The first account created in this fresh Open
+WebUI volume is the administrator.

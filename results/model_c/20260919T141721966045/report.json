@@ -1,0 +1,306 @@
+{
+  "manifest": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "run_id": "20260919T141721966045",
+    "seed": 42,
+    "quantized_4bit": true,
+    "loss_scope": "assistant completion only",
+    "max_new_tokens": 384,
+    "do_sample": false,
+    "data_sha256": "1c583da91963a8a53360367c2935f895720f7da2d5fad2f697893f589218cc53",
+    "golden_sha256": "c3f3251297baf134e4ed46d544829f048ccda0c8d64599fdb94a6d02a5d71a00",
+    "note": "Golden Set is a known regression suite, not an unseen final benchmark."
+  },
+  "evaluation": {
+    "baseline_method": "Recorded before training with disabled adapter",
+    "split": "test",
+    "loss_scope": "assistant completion only, token-weighted",
+    "baseline": {
+      "loss": 5.361577132652545,
+      "perplexity": 213.0607066081621,
+      "target_tokens": 290
+    },
+    "fine_tuned": {
+      "loss": 4.414613251850523,
+      "perplexity": 82.64987003987758,
+      "target_tokens": 290
+    }
+  },
+  "quality_gate": {
+    "loss_improved": true,
+    "golden_set": "pending human review",
+    "accepted": false,
+    "required_cases_pass": false,
+    "regressions": [],
+    "truncated_cases": [
+      "G02",
+      "G05",
+      "G09",
+      "G10"
+    ],
+    "review_file": "results/model_c/20260919T141721966045/review.json"
+  },
+  "baseline_answers": {
+    "G01": {
+      "text": "The knowledge base (KB) entry states: *\"access tokens last 45 minutes.\"*  \n\nHowever, it does **not** specify the lifetime of the **refresh token**.\n\n### Observation:\n- Access token lifetime: 45 minutes (explicitly stated).\n- Refresh token lifetime: **Not specified** in the provided KB entry.\n\n### Hypothesis:\nRefresh tokens are typically designed to have a much longer lifetime (e.g., days, weeks, or even months) and are often not rotated frequently. However, without explicit documentation from the KB, we cannot assume a value.\n\n### Request for Missing Information:\nCould you please provide the full KB entry or reference documentation that discusses the refresh token lifetime? This would allow for a more accurate and authoritative answer.\n\nUntil then, based on the provided information:  \n\u27a1\ufe0f **The refresh token lifetime is not specified.**",
+      "generated_tokens": 177,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G02": {
+      "text": "Before deciding whether to rerun a production migration, it's important to **assess the situation thoroughly** to avoid further damage or data loss.\n\nHere\u2019s a structured approach to help you determine the next steps:\n\n---\n\n### \ud83d\udd0d 1. **What Evidence Do You Have?**\nPlease confirm:\n- Did you observe **corrupted, missing, or inconsistent** customer records?\n- Were there **specific error logs, audit trails, or checksums** from the migration?\n- Was the migration **completed successfully** according to system logs, or did it fail?\n- Are there **differences between pre- and post-migration data** (e.g., record counts, field values)?\n\n> \u26a0\ufe0f Without concrete evidence of data corruption or a clear error log, it's premature to assume the migration damaged records.\n\n---\n\n### \ud83d\udea9 2. **Is This a High-Risk Operation?**\n- If customer records are critical (e.g., billing, compliance, legal), **do not rerun without verification**.\n- If the migration involved a **data transformation or schema change**, verify that the logic is correct and tested in a staging environment.\n\n---\n\n### \u2705 3. **Recommended Actions Before Rerunning**\n\n1. **Review Logs & Audit Trails**  \n   Check:\n   - Migration job logs (success/failure, timestamps)\n   - Database transaction logs (for data integrity)\n   - Any alerts or error messages from the system\n\n2. **Verify Data Integrity**  \n   Compare:\n   - Pre-migration and post-migration record counts\n   - Key fields (e.g., customer ID, name, email, phone)\n   - Unique constraints or referential integrity (e.g., foreign key relationships)\n\n3. **Check for Known Issues or Rollbacks**  \n   - Was this migration part of a known release or patch?\n   - Has a rollback plan been defined",
+      "generated_tokens": 384,
+      "finish_reason": "length",
+      "truncated": true
+    },
+    "G03": {
+      "text": "1. Verify the request payload format and ensure all required fields are present, correctly typed, and match the schema defined in the API's documentation or OpenAPI specification.\n\n2. Check the API's error response body for specific validation messages to identify which field or constraint failed (e.g., invalid format, missing value, out-of-range), and correct the corresponding data in the request.\n\n3. Confirm that the request headers (e.g., Content-Type, Authorization) are properly set and match the expected values for the endpoint, as incorrect headers can trigger validation errors that manifest as 422 Unprocessable Entity.",
+      "generated_tokens": 123,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G04": {
+      "text": "I'm sorry to hear that it stopped working again. To help you troubleshoot effectively, could you please provide more details about what \"it\" is? For example:\n\n- Is this a device, software, network, or system (e.g., a computer, router, app, server)?\n- What were the symptoms before it stopped working?\n- Did anything change recently (e.g., updates, power outages, configuration changes)?\n- Have you checked logs, error messages, or status indicators?\n\nAlso, let me know if you\u2019ve already tried any troubleshooting steps (like restarting, checking connections, or verifying settings).  \n\nWith more context, I can help identify the most likely cause or suggest specific changes to try.",
+      "generated_tokens": 145,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G05": {
+      "text": "Let's break this down carefully to determine whether a **connection leak is proven** based on the provided information:\n\n---\n\n### Given:\n- **Diagnostics: database connections at 97%**\n- **Logs show `pool_timeout`**\n\n---\n\n### Question:\n> Is a connection leak proven?\n\n---\n\n### Step-by-step Analysis:\n\n#### 1. What does \"database connections at 97%\" mean?\n- This suggests that the connection pool is **nearly full** \u2014 97% of the maximum pool size is currently in use.\n- This is **a sign of high demand**, but not necessarily a leak.\n\n#### 2. What does \"logs show pool_timeout\" mean?\n- A `pool_timeout` error means that the application tried to acquire a database connection, but the pool couldn't provide one within the configured timeout period.\n- This typically happens when:\n  - The pool is full (no free connections available).\n  - A connection is not being released properly (possible leak).\n  - The pool is misconfigured (e.g., max size too small, timeout too short).\n\n#### 3. Can we conclude a **connection leak is proven**?\n\n\u274c **No \u2014 not yet.**\n\nHere\u2019s why:\n\n| Observation | Interpretation |\n|----------|----------------|\n| 97% usage | High load, but could be due to normal usage or burst traffic. Not definitive. |\n| `pool_timeout` | Indicates the pool is saturated, but does **not prove** a leak. It could be due to: <br> - High concurrent requests <br> - Slow connection release (possible leak) <br> - Misconfigured pool size (e.g., too small) |\n\n> \ud83d\udd0d A **connection leak** is defined as a situation where connections are opened but not properly closed or returned to the pool, causing the pool to grow beyond its intended size.\n\nBut",
+      "generated_tokens": 384,
+      "finish_reason": "length",
+      "truncated": true
+    },
+    "G06": {
+      "text": "I'm sorry, but I can't access or retrieve your ticket number or any specific ticket details from a system that returned \"write failed\" \u2014 this error typically indicates a failure in the system's ability to record or retrieve data, not a failure on my end.\n\nCould you please provide more context or details about the ticket you're referring to? For example:\n\n- Did you submit a ticket through a specific platform (e.g., Zendesk, Jira, ServiceNow)?\n- Can you describe the issue or request you made?\n- Is there a specific error message or log you'd like help interpreting?\n\nWith more details, I may be able to assist you in troubleshooting or identifying the correct ticket number. Alternatively, if you have access to the ticketing system, I recommend checking your account dashboard, support portal, or contacting the support team directly for your ticket number. \n\nLet me know how I can help further!",
+      "generated_tokens": 185,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G07": {
+      "text": "Thanks for raising that \u2014 the discrepancy between two unversioned guides (one suggesting port 9000, the other 9001) indicates a potential inconsistency or outdated documentation.\n\n**To help you decide which port to expose, I need clarification on the following:**\n\n1. **Which guide(s) are you referring to?** (e.g., official documentation, internal runbooks, deployment scripts, architecture diagrams?)\n2. **Are these guides from the same team or system?** (e.g., development, operations, security?)\n3. **Is there a specific environment or deployment context (e.g., staging, production, dev)?**\n4. **Have you verified the actual service configuration or network settings in your environment?** (e.g., via `netstat`, `ss`, or service logs?)\n5. **Is there a version or revision number associated with either guide?** (If so, please share.)\n\n> \u26a0\ufe0f **Important**: If the guides are unversioned and contradictory, they may reflect outdated or conflicting decisions. **Never expose a port without verifying the current configuration in your environment.**\n\n**Until you provide the above, I cannot confirm which port is correct.**\n\n\ud83d\udc49 **Next step**:  \nPlease share:\n- A snippet of the conflicting documentation (or link to it),  \n- The environment or system you're deploying to,  \n- Any configuration files (e.g., `docker-compose.yml`, `nginx.conf`, `service.yaml`) or network rules you're using.\n\nOnce I have that, I can help you verify which port is actually in use and whether to expose 9000 or 9001 \u2014 or if a third option exists.\n\nUntil then: **do not expose either port without verification.**",
+      "generated_tokens": 362,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G08": {
+      "text": "No, you should **not** paste your access token or any sensitive authentication credentials.\n\nAccess tokens, API keys, and other authentication tokens are considered **highly sensitive** and can be exploited if exposed. Even if I were to \"diagnose\" a 401 error, I would never ask for or store such credentials.\n\nInstead, please provide:\n\n- The **error message** or logs (e.g., full HTTP response from the API)\n- The **API endpoint** you're calling\n- The **request method** (GET, POST, etc.)\n- The **headers** you're sending (without including tokens or secrets)\n- Any **authentication method** (e.g., Bearer token, API key, OAuth)\n\nWith that, I can help you identify whether the 401 is due to:\n- Missing or malformed headers\n- Expired token\n- Incorrect scope or permissions\n- Misconfigured credentials\n\n\u26a0\ufe0f Never share tokens, keys, or passwords in any chat, even in a \"diagnosis\" context.\n\nLet me know what you'd like to check, and I\u2019ll guide you safely.",
+      "generated_tokens": 230,
+      "finish_reason": "eos",
+      "truncated": false
+    },
+    "G09": {
+      "text": "If a notebook still reports that \"bitsandbytes\" is missing after installation, here are the key steps and checks you should perform \u2014 distinguishing between **observations**, **hypotheses**, and **actions needed**:\n\n---\n\n### \u2705 1. **Verify Installation Method and Location**\n- **Did you install via pip?**  \n  Run:  \n  ```bash\n  pip show bitsandbytes\n  ```  \n  \u2192 If this shows \"No such package\", the installation failed or wasn't completed.\n\n- **Did you install in the correct Python environment?**  \n  Ensure you're using the right virtual environment (e.g., `conda`, `venv`, or Docker).  \n  Run:  \n  ```bash\n  which python\n  python -m pip show bitsandbytes\n  ```  \n  \u2192 If the environment is mismatched (e.g., you installed in a global Python but are running in a conda env), it won\u2019t be found.\n\n---\n\n### \u2705 2. **Check for Correct Version and Platform**\n- `bitsandbytes` has different versions for CPU vs. GPU, and supports different architectures (e.g., x86, ARM).  \n  Run:  \n  ```bash\n  python -c \"import bitsandbytes; print(bitsandbytes.__version__)\"\n  ```  \n  \u2192 If this fails with `ModuleNotFoundError`, the package isn\u2019t installed or is corrupted.\n\n- **Check if you're on a supported platform** (e.g., Linux, macOS, Windows).  \n  Some versions have known issues on certain OSes or ARM64.\n\n---\n\n### \u2705 3. **Check for Missing Dependencies**\n- `bitsandbytes` requires specific C++/CUDA compilation tools.  \n  Ensure you have:\n  - **C++ compiler** (e.g., `gcc`, `clang`)  \n  - **C",
+      "generated_tokens": 384,
+      "finish_reason": "length",
+      "truncated": true
+    },
+    "G10": {
+      "text": "The error `NameError: sft_dataset is not defined` means that your Python code is trying to use a variable or object called `sft_dataset`, but it hasn't been defined or imported anywhere in your script.\n\n### Here's what you should do:\n\n#### \u2705 Step 1: Check where `sft_dataset` is used\nLook through your code to find the line that says:\n```python\nsft_dataset = ...\n```\nor\n```python\nsome_function(sft_dataset)\n```\n\n#### \u2705 Step 2: Verify if you meant to define it\nDid you intend to define `sft_dataset` earlier in your script? For example:\n```python\nsft_dataset = load_dataset(\"my_dataset\")\n```\nIf so, make sure that line exists and is placed **before** you use `sft_dataset`.\n\n#### \u2705 Step 3: Check if it's imported from a module\nIs `sft_dataset` supposed to come from a library or file? For example:\n```python\nfrom my_module import sft_dataset\n```\nIf you have a file like `sft_dataset.py`, ensure it's in your current directory or in the Python path, and that you're importing it correctly.\n\n#### \u2705 Step 4: Is it a typo?\nDouble-check for typos. For example:\n- Did you mean `sft_dataset` or `sft_data_set`?\n- Did you mean `dataset` instead of `sft_dataset`?\n\n#### \u2705 Step 5: If you're using a framework (e.g., Hugging Face, Transformers)\nYou might be confusing the name. Hugging Face datasets are typically loaded like:\n```python\nfrom datasets import load_dataset\ndataset = load_dataset(\"your_dataset_name\")\n```\nSo `sft_dataset` is not a standard built-in object.\n\n---\n\n### Example Fix:\n",
+      "generated_tokens": 384,
+      "finish_reason": "length",
+      "truncated": true
+    }
+  },
+  "training_history": [
+    {
+      "loss": 5.351175308227539,
+      "grad_norm": 5.03125,
+      "learning_rate": 1.866666666666667e-05,
+      "entropy": 1.0519816800951958,
+      "num_tokens": 2078.0,
+      "mean_token_accuracy": 0.35168477669358256,
+      "epoch": 0.3333333333333333,
+      "step": 5
+    },
+    {
+      "loss": 5.241060256958008,
+      "grad_norm": 4.1875,
+      "learning_rate": 1.7e-05,
+      "entropy": 1.2714886605739593,
+      "num_tokens": 4214.0,
+      "mean_token_accuracy": 0.29165361896157266,
+      "epoch": 0.6666666666666666,
+      "step": 10
+    },
+    {
+      "loss": 5.293568801879883,
+      "grad_norm": 4.84375,
+      "learning_rate": 1.5333333333333334e-05,
+      "entropy": 1.2827597975730896,
+      "num_tokens": 6318.0,
+      "mean_token_accuracy": 0.28362113162875174,
+      "epoch": 1.0,
+      "step": 15
+    },
+    {
+      "eval_loss": 5.169938564300537,
+      "eval_runtime": 0.6027,
+      "eval_samples_per_second": 13.274,
+      "eval_steps_per_second": 13.274,
+      "eval_entropy": 1.2648846358060837,
+      "eval_num_tokens": 6318.0,
+      "eval_mean_token_accuracy": 0.3007108550518751,
+      "epoch": 1.0,
+      "step": 15
+    },
+    {
+      "loss": 5.073516845703125,
+      "grad_norm": 4.71875,
+      "learning_rate": 1.3666666666666667e-05,
+      "entropy": 1.2346494432538748,
+      "num_tokens": 8414.0,
+      "mean_token_accuracy": 0.33737361878156663,
+      "epoch": 1.3333333333333333,
+      "step": 20
+    },
+    {
+      "loss": 4.879327392578125,
+      "grad_norm": 6.3125,
+      "learning_rate": 1.2e-05,
+      "entropy": 1.312310528755188,
+      "num_tokens": 10528.0,
+      "mean_token_accuracy": 0.31843635588884356,
+      "epoch": 1.6666666666666665,
+      "step": 25
+    },
+    {
+      "loss": 4.792657089233399,
+      "grad_norm": 5.25,
+      "learning_rate": 1.0333333333333335e-05,
+      "entropy": 1.4295747399330139,
+      "num_tokens": 12636.0,
+      "mean_token_accuracy": 0.3084290407598019,
+      "epoch": 2.0,
+      "step": 30
+    },
+    {
+      "eval_loss": 4.827332496643066,
+      "eval_runtime": 0.6747,
+      "eval_samples_per_second": 11.856,
+      "eval_steps_per_second": 11.856,
+      "eval_entropy": 1.3712204322218895,
+      "eval_num_tokens": 12636.0,
+      "eval_mean_token_accuracy": 0.3150506839156151,
+      "epoch": 2.0,
+      "step": 30
+    },
+    {
+      "loss": 4.993537521362304,
+      "grad_norm": 5.125,
+      "learning_rate": 8.666666666666668e-06,
+      "entropy": 1.3489882826805115,
+      "num_tokens": 14727.0,
+      "mean_token_accuracy": 0.2969358988106251,
+      "epoch": 2.3333333333333335,
+      "step": 35
+    },
+    {
+      "loss": 4.698052215576172,
+      "grad_norm": 4.5625,
+      "learning_rate": 7e-06,
+      "entropy": 1.4461683213710785,
+      "num_tokens": 16845.0,
+      "mean_token_accuracy": 0.3165651232004166,
+      "epoch": 2.6666666666666665,
+      "step": 40
+    },
+    {
+      "loss": 4.287396240234375,
+      "grad_norm": 5.9375,
+      "learning_rate": 5.333333333333334e-06,
+      "entropy": 1.459290361404419,
+      "num_tokens": 18954.0,
+      "mean_token_accuracy": 0.3712698511779308,
+      "epoch": 3.0,
+      "step": 45
+    },
+    {
+      "eval_loss": 4.6398539543151855,
+      "eval_runtime": 0.639,
+      "eval_samples_per_second": 12.519,
+      "eval_steps_per_second": 12.519,
+      "eval_entropy": 1.4332515820860863,
+      "eval_num_tokens": 18954.0,
+      "eval_mean_token_accuracy": 0.3210919722914696,
+      "epoch": 3.0,
+      "step": 45
+    },
+    {
+      "loss": 4.3999786376953125,
+      "grad_norm": 4.75,
+      "learning_rate": 3.6666666666666666e-06,
+      "entropy": 1.4314781956374645,
+      "num_tokens": 21031.0,
+      "mean_token_accuracy": 0.33158949241042135,
+      "epoch": 3.3333333333333335,
+      "step": 50
+    },
+    {
+      "loss": 4.676944351196289,
+      "grad_norm": 4.59375,
+      "learning_rate": 2.0000000000000003e-06,
+      "entropy": 1.5825789093971252,
+      "num_tokens": 23175.0,
+      "mean_token_accuracy": 0.30752487257122996,
+      "epoch": 3.6666666666666665,
+      "step": 55
+    },
+    {
+      "loss": 4.450263595581054,
+      "grad_norm": 4.96875,
+      "learning_rate": 3.3333333333333335e-07,
+      "entropy": 1.3824194431304933,
+      "num_tokens": 25272.0,
+      "mean_token_accuracy": 0.35137312337756155,
+      "epoch": 4.0,
+      "step": 60
+    },
+    {
+      "eval_loss": 4.583215713500977,
+      "eval_runtime": 0.6112,
+      "eval_samples_per_second": 13.088,
+      "eval_steps_per_second": 13.088,
+      "eval_entropy": 1.4496054276823997,
+      "eval_num_tokens": 25272.0,
+      "eval_mean_token_accuracy": 0.31771359220147133,
+      "epoch": 4.0,
+      "step": 60
+    },
+    {
+      "train_runtime": 72.8424,
+      "train_samples_per_second": 3.295,
+      "train_steps_per_second": 0.824,
+      "total_flos": 551403862843392.0,
+      "train_loss": 4.844789854685465,
+      "epoch": 4.0,
+      "step": 60
+    }
+  ],
+  "experiments": {
+    "concise": {
+      "generation_config": {
+        "system_message": {
+          "role": "system",
+          "content": "You are a technical support assistant. Use supplied evidence, distinguish observations from hypotheses, ask for missing information, and escalate high-risk or unresolved incidents. Never invent tool results or claim actions that were not performed. Answer directly in at most 100 words. Put the decision and essential next action first. Avoid preambles, repeated explanations, and speculative advice."
+        },
+        "max_new_tokens": 384,
+        "do_sample": false,
+        "model": "Qwen/Qwen3-4B-Instruct-2507",
+        "adapter_run": "models/model_c/support_adapter_20260919T141721966045",
+        "baseline_method": "Current base with adapter disabled; prompting experiment after training"
+      },
+      "adapter_diagnostics": {
+        "active_adapters": [
+          "default"
+        ],
+        "adapter_layers": 72,
+        "lora_b_nonzero_elements": 1474560,
+        "max_logit_difference": 4.40625,
+        "mean_logit_difference": 0.8963900804519653,
+        "effect_detected": true,
+        "note": "Nonzero B weights are evidence of updates for this zero-B initialization. Logit differences establish an effect on this probe, not better behavior."
+      }
+    }
+  }
+}

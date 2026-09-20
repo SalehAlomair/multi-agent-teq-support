@@ -1,0 +1,32 @@
+{"id":"R001","text":"According to the documentation, how long does an access token remain valid?","expected_route":"qa"}
+{"id":"R002","text":"What does the manual say about rolling back a deployment?","expected_route":"qa"}
+{"id":"R003","text":"Use the docs to explain which port the database service uses.","expected_route":"qa"}
+{"id":"R004","text":"Where in the documentation is the password reset procedure described?","expected_route":"qa"}
+{"id":"R005","text":"What are the documented system requirements for this platform?","expected_route":"qa"}
+{"id":"R006","text":"From the trusted guide, explain how OAuth refresh tokens work.","expected_route":"qa"}
+{"id":"R007","text":"Find the documented timeout configured for the API gateway.","expected_route":"qa"}
+{"id":"R008","text":"What does the manual say about creating a database backup?","expected_route":"qa"}
+{"id":"R009","text":"Check whether the production API is healthy right now.","expected_route":"tools"}
+{"id":"R010","text":"Look up the currently installed transformers package version.","expected_route":"tools"}
+{"id":"R011","text":"Search existing tickets for similar authentication failures.","expected_route":"tools"}
+{"id":"R012","text":"Inspect these service logs and find the latest fatal error.","expected_route":"tools"}
+{"id":"R013","text":"Create a support ticket for this unresolved network issue.","expected_route":"tools"}
+{"id":"R014","text":"Query the live database connection utilization.","expected_route":"tools"}
+{"id":"R015","text":"Check whether version 5.0 of this package is available.","expected_route":"tools"}
+{"id":"R016","text":"Run the diagnostic checks for the GPU worker.","expected_route":"tools"}
+{"id":"R017","text":"My API returns 422 after deployment; help me troubleshoot it.","expected_route":"support_specialist"}
+{"id":"R018","text":"The application works locally but times out in production. What should I investigate?","expected_route":"support_specialist"}
+{"id":"R019","text":"CUDA is detected but model training still runs on the CPU.","expected_route":"support_specialist"}
+{"id":"R020","text":"Users cannot sign in after enabling multi-factor authentication.","expected_route":"support_specialist"}
+{"id":"R021","text":"My database migration fails halfway through with a duplicate key error.","expected_route":"support_specialist"}
+{"id":"R022","text":"The container exits immediately after a successful deployment.","expected_route":"support_specialist"}
+{"id":"R023","text":"Requests randomly fail through the proxy but work directly.","expected_route":"support_specialist"}
+{"id":"R024","text":"Pip installs the library, but Python cannot import it in my virtual environment.","expected_route":"support_specialist"}
+{"id":"R025","text":"Production down and customers cannot access the service.","expected_route":"escalate"}
+{"id":"R026","text":"We may have permanent data loss in the customer database.","expected_route":"escalate"}
+{"id":"R027","text":"A security breach may have exposed authentication tokens.","expected_route":"escalate"}
+{"id":"R028","text":"Stop automated actions because database corruption is suspected.","expected_route":"escalate"}
+{"id":"R029","text":"Customer records appear to be disappearing from production.","expected_route":"escalate"}
+{"id":"R030","text":"An unknown actor is using administrator credentials in production.","expected_route":"escalate"}
+{"id":"R031","text":"The payment service is unavailable for every customer and rollback failed.","expected_route":"escalate"}
+{"id":"R032","text":"Sensitive user information may have been leaked outside the company.","expected_route":"escalate"}

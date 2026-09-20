@@ -3,7 +3,7 @@ services:
     build: .
     env_file: .env
     environment:
-      LLAMA_SERVER_URL: http://host.docker.internal:8080/v1/chat/completions
+      LLAMA_SERVER_URL: ${LLAMA_SERVER_DOCKER_URL:-http://host.docker.internal:8080/v1/chat/completions}
     ports:
       - "8000:8000"
     volumes:
@@ -21,18 +21,24 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     environment:
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Set WEBUI_SECRET_KEY in .env}
       OPENAI_API_BASE_URL: http://support-agent:8000/v1
       OPENAI_API_BASE_URLS: http://support-agent:8000/v1
       OPENAI_API_KEY: ${OPENAI_API_KEY:-local-demo-key}
       OPENAI_API_KEYS: ${OPENAI_API_KEY:-local-demo-key}
       ENABLE_OPENAI_API: "true"
       ENABLE_OLLAMA_API: "false"
-      ENABLE_PERSISTENT_CONFIG: "false"
+      ENABLE_DIRECT_CONNECTIONS: "false"
+      ENABLE_PERSISTENT_CONFIG: "true"
+      RESET_CONFIG_ON_START: "false"
+      DEFAULT_MODELS: tuwaiq-tech-support-agent
+      DEFAULT_PINNED_MODELS: tuwaiq-tech-support-agent
+      MODEL_ORDER_LIST: '["tuwaiq-tech-support-agent"]'
       OFFLINE_MODE: "true"
       HF_HUB_OFFLINE: "1"
       RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
     ports:
-      - "3000:8080"
+      - "${OPEN_WEBUI_PORT:-3001}:8080"
     volumes:
       - openwebui:/app/backend/data
     depends_on:
